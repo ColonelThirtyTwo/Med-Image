@@ -24,13 +24,14 @@ public class LocalConnection extends Connection {
      */
     @Override
     public List<Study> getStudies() {
-        File folder = new File(".");
+        File folder = new File("./studies/");
         File[] studyFolders = folder.listFiles();
         
         List<Study> list = new ArrayList<Study>();
         
         for(File f : studyFolders)
-            list.add(new LocalStudy(f));
+            if(f.isDirectory())
+                list.add(new LocalStudy(f));
         
         return list;
     }

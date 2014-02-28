@@ -1,7 +1,6 @@
 
 package medimage;
 
-import javax.swing.JFrame;
 import medimage.views.ConnectionsView;
 import medimage.views.QuadImageView;
 import medimage.views.SingleImageView;
@@ -65,5 +64,4 @@ public class MedImage {
         singleImageView.setVisible(false);
         quadImageView.setVisible(false);
     }
-    
 }

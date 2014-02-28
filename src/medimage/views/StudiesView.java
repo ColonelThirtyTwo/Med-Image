@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package medimage.views;
+
+import java.util.List;
+import medimage.MedImage;
+import medimage.models.Connection;
+import medimage.models.Study;
 
 /**
  *
@@ -12,13 +12,27 @@ package medimage.views;
  */
 public class StudiesView extends javax.swing.JFrame {
 
+    private Connection connection;
+    
     /**
      * Creates new form StudiesView
      */
     public StudiesView() {
         initComponents();
     }
-
+    
+    /**
+     * Updates the UI to view a list of studies and makes the frame visible.
+     * @param connection
+     */
+    public void viewStudy(Connection connection)
+    {
+        this.setVisible(true);
+        this.connection = connection;
+        List<Study> studies = connection.getStudies();
+        this.studiesList.setListData(studies.toArray());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,26 +43,31 @@ public class StudiesView extends javax.swing.JFrame {
     private void initComponents() {
 
         label = new javax.swing.JLabel();
-        studies_scroller = new javax.swing.JScrollPane();
-        studies_list = new javax.swing.JList();
-        load_button = new javax.swing.JButton();
-        back_button = new javax.swing.JButton();
+        studiesContainer = new javax.swing.JScrollPane();
+        studiesList = new javax.swing.JList();
+        loadButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         label.setText("Select Study");
 
-        studies_list.setModel(new javax.swing.AbstractListModel() {
+        studiesList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        studies_list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        studies_scroller.setViewportView(studies_list);
+        studiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        studiesContainer.setViewportView(studiesList);
 
-        load_button.setText("View Study");
+        loadButton.setText("View Study");
 
-        back_button.setText("Back");
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,11 +76,11 @@ public class StudiesView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(studies_scroller)
+                    .addComponent(studiesContainer)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(load_button)
+                        .addComponent(loadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
-                        .addComponent(back_button))
+                        .addComponent(backButton))
                     .addComponent(label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -71,16 +90,25 @@ public class StudiesView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(studies_scroller, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(studiesContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(load_button)
-                    .addComponent(back_button))
+                    .addComponent(loadButton)
+                    .addComponent(backButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    /**
+     * Returns to the connections view.
+     * @param evt event
+     */
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        this.setVisible(false);
+        MedImage.getConnectionsView().setVisible(true);
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,10 +146,10 @@ public class StudiesView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton back_button;
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel label;
-    private javax.swing.JButton load_button;
-    private javax.swing.JList studies_list;
-    private javax.swing.JScrollPane studies_scroller;
+    private javax.swing.JButton loadButton;
+    private javax.swing.JScrollPane studiesContainer;
+    private javax.swing.JList studiesList;
     // End of variables declaration//GEN-END:variables
 }

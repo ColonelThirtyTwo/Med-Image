@@ -1,6 +1,9 @@
 
 package medimage.views;
 
+import medimage.MedImage;
+import medimage.models.Connection;
+
 /**
  * Views connections, or data sources, such as the local filesystem or a remote
  * imaging devices.
@@ -80,7 +83,11 @@ public class ConnectionsView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        // TODO add your handling code here:
+        Connection conn = connectionsSelector.getSelectedValue();
+        if(conn != null) {
+            this.setVisible(false);
+            MedImage.getStudiesView().viewStudy(conn);
+        }
     }//GEN-LAST:event_loadButtonActionPerformed
 
     /**
