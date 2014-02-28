@@ -1,22 +1,69 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package medimage;
 
+import javax.swing.JFrame;
+import medimage.views.ConnectionsView;
+import medimage.views.QuadImageView;
+import medimage.views.SingleImageView;
+import medimage.views.StudiesView;
+
 /**
- *
+ * Class that holds the main method.
  * @author col32
  */
 public class MedImage {
+    
+    private static ConnectionsView connectionsView;
+    private static StudiesView studiesView;
+    private static SingleImageView singleImageView;
+    private static QuadImageView quadImageView;
 
     /**
+     * Gets the Connections JPanel
+     * @return panel
+     */
+    public static ConnectionsView getConnectionsView() {
+        return connectionsView;
+    }
+    
+    /**
+     * Gets the Studies JPanel.
+     * @return panel
+     */
+    public static StudiesView getStudiesView() {
+        return studiesView;
+    }
+    
+    /**
+     * Gets the Single image viewer JPanel.
+     * @return panel
+     */
+    public static SingleImageView getSingleImageView() {
+        return singleImageView;
+    }
+    
+    /**
+     * Gets the 2x2 Image viewer JPanel.
+     * @return panel.
+     */
+    public static QuadImageView getQuadImageView() {
+        return quadImageView;
+    }
+    
+    /**
+     * Main method
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // Creates all the views, but hide all but the connections view.
+        connectionsView = new ConnectionsView();
+        studiesView = new StudiesView();
+        singleImageView = new SingleImageView();
+        quadImageView = new QuadImageView();
+        connectionsView.setVisible(true);
+        studiesView.setVisible(false);
+        singleImageView.setVisible(false);
+        quadImageView.setVisible(false);
     }
     
 }

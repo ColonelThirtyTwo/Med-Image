@@ -20,5 +20,10 @@ public abstract class Study {
      * @return images.
      */
     public abstract List<Image> getImages();
+
     
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

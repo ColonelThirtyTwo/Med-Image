@@ -25,8 +25,8 @@ public class ConnectionsView extends javax.swing.JFrame {
     private void initComponents() {
 
         headerLabel = new javax.swing.JLabel();
-        connection_scroller = new javax.swing.JScrollPane();
-        connectionsSelector = new javax.swing.JList();
+        javax.swing.JScrollPane connectionsScroller = new javax.swing.JScrollPane();
+        connectionsSelector = new javax.swing.JList<medimage.models.Connection>();
         loadButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -39,7 +39,8 @@ public class ConnectionsView extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         connectionsSelector.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        connection_scroller.setViewportView(connectionsSelector);
+        connectionsSelector.setListData(new medimage.models.Connection[] { new medimage.models.local.LocalConnection() });
+        connectionsScroller.setViewportView(connectionsSelector);
 
         loadButton.setText("Load");
         loadButton.addActionListener(new java.awt.event.ActionListener() {
@@ -55,7 +56,7 @@ public class ConnectionsView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(connection_scroller)
+                    .addComponent(connectionsScroller)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(headerLabel)
@@ -69,7 +70,7 @@ public class ConnectionsView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(headerLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(connection_scroller, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(connectionsScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(loadButton)
                 .addContainerGap())
@@ -118,8 +119,7 @@ public class ConnectionsView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane connection_scroller;
-    private javax.swing.JList connectionsSelector;
+    private javax.swing.JList<medimage.models.Connection> connectionsSelector;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JButton loadButton;
     // End of variables declaration//GEN-END:variables

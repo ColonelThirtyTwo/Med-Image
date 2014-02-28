@@ -26,7 +26,7 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="connection_scroller" max="32767" attributes="0"/>
+                  <Component id="connectionsScroller" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="headerLabel" min="-2" max="-2" attributes="0"/>
@@ -45,7 +45,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="headerLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="connection_scroller" pref="224" max="32767" attributes="0"/>
+              <Component id="connectionsScroller" pref="224" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="loadButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -59,8 +59,10 @@
         <Property name="text" type="java.lang.String" value="Select Data Source"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="connection_scroller">
+    <Container class="javax.swing.JScrollPane" name="connectionsScroller">
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
 
@@ -77,6 +79,10 @@
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="connectionsSelector.setListData(new medimage.models.Connection[] { new medimage.models.local.LocalConnection() });&#xa;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;medimage.models.Connection&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

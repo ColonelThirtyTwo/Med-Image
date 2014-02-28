@@ -15,5 +15,9 @@ public abstract class Connection {
      * @return list of studies.
      */
     public abstract List<Study> getStudies();
-    
+
+    @Override
+    public String toString() {
+        return "Local Connection";
+    }
 }
