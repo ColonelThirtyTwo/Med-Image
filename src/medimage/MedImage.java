@@ -1,6 +1,9 @@
 
 package medimage;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import medimage.models.DisplayState;
 import medimage.views.ConnectionsView;
 import medimage.views.QuadImageView;
 import medimage.views.SingleImageView;
@@ -53,7 +56,7 @@ public class MedImage {
      * Main method
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
         // Creates all the views, but hide all but the connections view.
         connectionsView = new ConnectionsView();
         studiesView = new StudiesView();
@@ -63,5 +66,13 @@ public class MedImage {
         studiesView.setVisible(false);
         singleImageView.setVisible(false);
         quadImageView.setVisible(false);
+        
+        /*
+        DisplayState testState = new DisplayState(DisplayState.States.SINGLE_IMAGE, 3);
+        testState.serialize("test.ser");
+        DisplayState newState = (DisplayState) DisplayState.deSerialize("test.ser");
+        System.out.println("DisplayState: " + newState.getCurrState() + " --  ImageIndex: " + newState.getImageIndex());
+        */
     }
+    
 }
