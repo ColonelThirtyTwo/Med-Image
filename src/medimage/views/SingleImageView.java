@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import medimage.MedImage;
 import medimage.SingleImageIterator;
 import medimage.models.Connection;
+import medimage.models.DisplayState;
 import medimage.models.Study;
 
 /**
@@ -55,7 +56,15 @@ public class SingleImageView extends javax.swing.JFrame {
         this.image.setIcon(new ImageIcon(this.iterator.getImages()[0].getImageData()));
         this.image.setText("");
     }
-
+    
+    /**
+     * Creates a display state.
+     * @return 
+     */
+    private DisplayState getDisplayState() {
+        return new DisplayState(DisplayState.States.SINGLE_IMAGE, this.iterator.getIndex());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,6 +80,7 @@ public class SingleImageView extends javax.swing.JFrame {
         prevButton = new javax.swing.JButton();
         javax.swing.JPanel imageContainer = new javax.swing.JPanel();
         image = new javax.swing.JLabel();
+        saveStateButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MedImage");
@@ -108,6 +118,13 @@ public class SingleImageView extends javax.swing.JFrame {
         image.setText("<image>");
         imageContainer.add(image);
 
+        saveStateButton.setText("Save State");
+        saveStateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveStateButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,7 +134,8 @@ public class SingleImageView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(switchViewLayout)
-                        .addGap(0, 305, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                        .addComponent(saveStateButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(prevButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -131,7 +149,9 @@ public class SingleImageView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(switchViewLayout)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(switchViewLayout)
+                    .addComponent(saveStateButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,6 +197,11 @@ public class SingleImageView extends javax.swing.JFrame {
         this.updateImage();
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private void saveStateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStateButtonActionPerformed
+        DisplayState state = this.getDisplayState();
+        study.saveDisplayState(state);
+    }//GEN-LAST:event_saveStateButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -217,6 +242,7 @@ public class SingleImageView extends javax.swing.JFrame {
     private javax.swing.JLabel image;
     private javax.swing.JButton nextButton;
     private javax.swing.JButton prevButton;
+    private javax.swing.JButton saveStateButton;
     private javax.swing.JButton switchViewLayout;
     // End of variables declaration//GEN-END:variables
 }

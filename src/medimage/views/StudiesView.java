@@ -4,6 +4,7 @@ package medimage.views;
 import java.util.List;
 import medimage.MedImage;
 import medimage.models.Connection;
+import medimage.models.DisplayState;
 import medimage.models.Study;
 
 /**
@@ -127,8 +128,18 @@ public class StudiesView extends javax.swing.JFrame {
      */
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         this.setVisible(false);
-        // TODO: Load display state, if any.
-        MedImage.getSingleImageView().viewImages(connection, this.studiesList.getSelectedValue());
+        
+        Study study = this.studiesList.getSelectedValue();
+        DisplayState state = study.getDisplayState();
+        
+        System.out.println(state);
+        
+        if(state == null)
+            MedImage.getSingleImageView().viewImages(connection, study);
+        else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE)
+            MedImage.getSingleImageView().viewImages(connection, study, state.getImageIndex());
+        else
+            MedImage.getQuadImageView().viewImages(connection, study, state.getImageIndex());
     }//GEN-LAST:event_loadButtonActionPerformed
 
     /**

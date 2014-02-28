@@ -29,7 +29,7 @@ public class QuadImageIterator implements ImageIterator {
      */
     public QuadImageIterator(List<Image> images, int index) {
         this.images = images;
-        this.index = index;
+        this.index = (index/4)*4; // Round down to nearest 4th
     }
     
     @Override

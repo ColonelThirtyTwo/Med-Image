@@ -11,16 +11,27 @@ public abstract class Study {
     
     /**
      * Gets the name of the study.
-     * @return study name.
+     * @return 
      */
     public abstract String getName();
     
     /**
      * Gets the list of images that this study contains.
-     * @return images.
+     * @return 
      */
     public abstract List<Image> getImages();
-
+    
+    /**
+     * Gets the saved display state.
+     * @return 
+     */
+    public abstract DisplayState getDisplayState();
+    
+    /**
+     * Saves the display state.
+     * @param state Display state to save.
+     */
+    public abstract void saveDisplayState(DisplayState state);
     
     @Override
     public String toString() {

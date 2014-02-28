@@ -29,7 +29,7 @@ public class SingleImageIterator implements ImageIterator {
      */
     public SingleImageIterator(List<Image> images, int index) {
         this.images = images;
-        this.index = (index/4)*4; // Round down to nearest 4th
+        this.index = index;
     }
     
     @Override

@@ -29,14 +29,14 @@ public class DisplayState implements Serializable {
      *
      * @serial
      */
-    private States currState;
+    private final States currState;
 
     /**
      * Index of image being displayed
      *
      * @serial
      */
-    private int imageIndex;
+    private final int imageIndex;
 
     /**
      * Constructor for DisplayState
@@ -68,6 +68,11 @@ public class DisplayState implements Serializable {
         return imageIndex;
     }
 
+    public boolean equals(DisplayState other) {
+        return other.getCurrState() == this.getCurrState() &&
+                this.getImageIndex() == other.getImageIndex();
+    }
+    
     /**
      * Method to to serialize object to specified file
      *
@@ -97,4 +102,8 @@ public class DisplayState implements Serializable {
         return ois.readObject();
     }
 
+    @Override
+    public String toString() {
+        return "DisplayState{" + "currState=" + currState + ", imageIndex=" + imageIndex + '}';
+    }
 }

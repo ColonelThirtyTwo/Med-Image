@@ -3,7 +3,6 @@ package medimage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import medimage.models.DisplayState;
 import medimage.views.ConnectionsView;
 import medimage.views.QuadImageView;
 import medimage.views.SingleImageView;
