@@ -25,12 +25,17 @@ public class StudiesView extends javax.swing.JFrame {
      * Updates the UI to view a list of studies and makes the frame visible.
      * @param connection
      */
-    public void viewStudy(Connection connection)
+    public void viewStudies(Connection connection)
     {
         this.setVisible(true);
         this.connection = connection;
         List<Study> studies = connection.getStudies();
-        this.studiesList.setListData(studies.toArray());
+        
+        // Convert to array
+        Study[] studiesArr = new Study[studies.size()];
+        studies.toArray(studiesArr);
+        
+        this.studiesList.setListData(studiesArr);
     }
     
     /**
@@ -44,11 +49,12 @@ public class StudiesView extends javax.swing.JFrame {
 
         label = new javax.swing.JLabel();
         studiesContainer = new javax.swing.JScrollPane();
-        studiesList = new javax.swing.JList();
+        studiesList = new javax.swing.JList<medimage.models.Study>();
         loadButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MedImage");
 
         label.setText("Select Study");
 
@@ -61,6 +67,11 @@ public class StudiesView extends javax.swing.JFrame {
         studiesContainer.setViewportView(studiesList);
 
         loadButton.setText("View Study");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadButtonActionPerformed(evt);
+            }
+        });
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +120,16 @@ public class StudiesView extends javax.swing.JFrame {
         this.setVisible(false);
         MedImage.getConnectionsView().setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
+    
+    /**
+     * Views a study
+     * @param evt 
+     */
+    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
+        this.setVisible(false);
+        // TODO: Load display state, if any.
+        MedImage.getSingleImageView().viewImages(connection, this.studiesList.getSelectedValue());
+    }//GEN-LAST:event_loadButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,6 +171,6 @@ public class StudiesView extends javax.swing.JFrame {
     private javax.swing.JLabel label;
     private javax.swing.JButton loadButton;
     private javax.swing.JScrollPane studiesContainer;
-    private javax.swing.JList studiesList;
+    private javax.swing.JList<medimage.models.Study> studiesList;
     // End of variables declaration//GEN-END:variables
 }

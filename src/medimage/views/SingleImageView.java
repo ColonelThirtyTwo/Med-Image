@@ -1,17 +1,49 @@
 
 package medimage.views;
 
+import javax.swing.ImageIcon;
+import medimage.MedImage;
+import medimage.SingleImageIterator;
+import medimage.models.Connection;
+import medimage.models.Study;
+
 /**
  *
  * @author col32
  */
 public class SingleImageView extends javax.swing.JFrame {
-
+    
+    private Connection conn;
+    private Study study;
+    private SingleImageIterator iterator;
+    
     /**
      * Creates new form SingleImageView
      */
     public SingleImageView() {
         initComponents();
+    }
+    
+    /**
+     * Updates the UI to view a list of images and makes the frame visible.
+     * @param conn Connection of the study
+     * @param study Study to view images from
+     */
+    public void viewImages(Connection conn, Study study)
+    {
+        this.setVisible(true);
+        this.conn = conn;
+        this.study = study;
+        this.iterator = new SingleImageIterator(study.getImages());
+        this.updateImage();
+    }
+    
+    /**
+     * Updates the UI with the current contents of the image iterator.
+     */
+    private void updateImage() {
+        this.image.setIcon(new ImageIcon(this.iterator.getImages()[0].getImageData()));
+        this.image.setText("");
     }
 
     /**
@@ -31,6 +63,7 @@ public class SingleImageView extends javax.swing.JFrame {
         image = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MedImage");
 
         switchViewLayout.setText("Switch to 2x2 View");
         switchViewLayout.addActionListener(new java.awt.event.ActionListener() {
@@ -101,21 +134,36 @@ public class SingleImageView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Returns to the studies list.
+     * @param evt 
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        MedImage.getStudiesView().viewStudies(conn);
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void switchViewLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchViewLayoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_switchViewLayoutActionPerformed
 
+    /**
+     * Scrolls to the next image set.
+     * @param evt 
+     */
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
-        // TODO add your handling code here:
+        iterator.prev();
+        this.updateImage();
     }//GEN-LAST:event_prevButtonActionPerformed
-
+    
+    /**
+     * Scrolls to the previous image set.
+     * @param evt 
+     */
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
+        iterator.next();
+        this.updateImage();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     /**

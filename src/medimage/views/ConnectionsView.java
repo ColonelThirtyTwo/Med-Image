@@ -33,6 +33,7 @@ public class ConnectionsView extends javax.swing.JFrame {
         loadButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MedImage");
 
         headerLabel.setText("Select Data Source");
 
@@ -86,7 +87,7 @@ public class ConnectionsView extends javax.swing.JFrame {
         Connection conn = connectionsSelector.getSelectedValue();
         if(conn != null) {
             this.setVisible(false);
-            MedImage.getStudiesView().viewStudy(conn);
+            MedImage.getStudiesView().viewStudies(conn);
         }
     }//GEN-LAST:event_loadButtonActionPerformed
 
