@@ -25,11 +25,11 @@ public class SingleImageIterator implements ImageIterator {
     /**
      * Creates a SingleImageIterator and starts it at the specified index.
      * @param images Images to iterate over.
-     * @param index Index to start at.
+     * @param index Index to start at, rounded down to the nearest fourth.
      */
     public SingleImageIterator(List<Image> images, int index) {
         this.images = images;
-        this.index = index;
+        this.index = (index/4)*4; // Round down to nearest 4th
     }
     
     @Override

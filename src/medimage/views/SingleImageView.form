@@ -29,7 +29,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="switchViewLayout" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="211" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="305" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="prevButton" min="-2" max="-2" attributes="0"/>
@@ -50,7 +50,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="switchViewLayout" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="imageContainer" max="32767" attributes="0"/>
+              <Component id="imageContainer" pref="358" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -96,6 +96,10 @@
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="imageContainer">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
         <Property name="columns" type="int" value="1"/>

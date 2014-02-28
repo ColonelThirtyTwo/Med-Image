@@ -1,12 +1,24 @@
 
 package medimage.views;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import medimage.MedImage;
+import medimage.QuadImageIterator;
+import medimage.models.Connection;
+import medimage.models.Image;
+import medimage.models.Study;
+
 /**
  * Displays 4 images in a 2x2 grid.
  * @author col32
  */
 public class QuadImageView extends javax.swing.JFrame {
-
+    
+    private Connection conn;
+    private Study study;
+    private QuadImageIterator iterator;
+    
     /**
      * Creates new form QuadImageView
      */
@@ -15,21 +27,46 @@ public class QuadImageView extends javax.swing.JFrame {
     }
     
     /**
-     * Scrolls to the next set of images.
-     * Does nothing if displaying the last set of images.
+     * Updates the UI to view a list of images and makes the frame visible.
+     * @param conn Connection of the study
+     * @param study Study to view images from
      */
-    public void gotoNextImages() {
-        
+    public void viewImages(Connection conn, Study study) {
+        this.viewImages(conn, study, 0);
     }
     
     /**
-     * Scrolls to the previous set of images.
-     * Does nothing if displaying the first set of images.
+     * Updates the UI to view a list of images and makes the frame visible.
+     * @param conn Connection of the study
+     * @param study Study to view images from
+     * @param index Index of image to view.
      */
-    public void gotoPrevImages() {
-        
+    public void viewImages(Connection conn, Study study, int index) {
+        this.setVisible(true);
+        this.conn = conn;
+        this.study = study;
+        this.iterator = new QuadImageIterator(study.getImages(), index);
+        this.updateImage();
+        this.pack();
     }
-
+    
+    /**
+     * Updates the UI with the current contents of the image iterator.
+     */
+    private void updateImage() {
+        Image[] images = iterator.getImages();
+        JLabel[] labels = {image1, image2, image3, image4};
+        
+        for(int i=0; i<4; i++)
+        {
+            if(images[i] == null)
+                labels[i].setIcon(null);
+            else
+                labels[i].setIcon(new ImageIcon(images[i].getImageData()));
+            labels[i].setText("");
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,14 +77,15 @@ public class QuadImageView extends javax.swing.JFrame {
     private void initComponents() {
 
         switchViewLayout = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
+        javax.swing.JScrollPane imageScroller = new javax.swing.JScrollPane();
         imageContainer = new javax.swing.JPanel();
         image1 = new javax.swing.JLabel();
         image2 = new javax.swing.JLabel();
         image3 = new javax.swing.JLabel();
         image4 = new javax.swing.JLabel();
-        nextButton = new javax.swing.JButton();
         prevButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MedImage");
@@ -59,13 +97,8 @@ public class QuadImageView extends javax.swing.JFrame {
             }
         });
 
-        backButton.setText("Back");
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
+        imageContainer.setMinimumSize(new java.awt.Dimension(1, 1));
+        imageContainer.setPreferredSize(new java.awt.Dimension(100, 100));
         imageContainer.setLayout(new java.awt.GridLayout(2, 2));
 
         image1.setText("<Image 1>");
@@ -80,17 +113,26 @@ public class QuadImageView extends javax.swing.JFrame {
         image4.setText("<Image 4>");
         imageContainer.add(image4);
 
-        nextButton.setText("Next");
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
+        imageScroller.setViewportView(imageContainer);
 
         prevButton.setText("Prev");
         prevButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevButtonActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
             }
         });
 
@@ -102,31 +144,32 @@ public class QuadImageView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(switchViewLayout))
+                        .addComponent(switchViewLayout)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(imageScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(prevButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nextButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
-                        .addComponent(backButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(backButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(switchViewLayout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(imageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(imageScroller, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(prevButton)
                     .addComponent(backButton)
-                    .addComponent(nextButton)
-                    .addComponent(prevButton))
+                    .addComponent(nextButton))
                 .addContainerGap())
         );
 
@@ -134,19 +177,23 @@ public class QuadImageView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        gotoNextImages();
+        iterator.next();
+        this.updateImage();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void switchViewLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchViewLayoutActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        MedImage.getSingleImageView().viewImages(conn, study, iterator.getIndex());
     }//GEN-LAST:event_switchViewLayoutActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
-        gotoPrevImages();
+        iterator.prev();
+        this.updateImage();
     }//GEN-LAST:event_prevButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        MedImage.getStudiesView().viewStudies(conn);
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

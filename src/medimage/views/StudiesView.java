@@ -7,7 +7,7 @@ import medimage.models.Connection;
 import medimage.models.Study;
 
 /**
- *
+ * View for listing all the studies of a connection.
  * @author col32
  */
 public class StudiesView extends javax.swing.JFrame {

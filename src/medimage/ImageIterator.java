@@ -23,7 +23,7 @@ public interface ImageIterator {
     
     /**
      * Returns the current image set.
-     * @return image set.
+     * @return image set. Items in here can be null.
      */
     public abstract Image[] getImages();
     
