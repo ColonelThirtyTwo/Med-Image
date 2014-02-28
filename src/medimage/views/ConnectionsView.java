@@ -24,27 +24,27 @@ public class ConnectionsView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        label = new javax.swing.JLabel();
+        headerLabel = new javax.swing.JLabel();
         connection_scroller = new javax.swing.JScrollPane();
-        connection_selector = new javax.swing.JList();
-        load_button = new javax.swing.JButton();
+        connectionsSelector = new javax.swing.JList();
+        loadButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        label.setText("Select Data Source");
+        headerLabel.setText("Select Data Source");
 
-        connection_selector.setModel(new javax.swing.AbstractListModel() {
+        connectionsSelector.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Local Folder", "Remote Device 1", "Remote Device 2" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        connection_selector.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        connection_scroller.setViewportView(connection_selector);
+        connectionsSelector.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        connection_scroller.setViewportView(connectionsSelector);
 
-        load_button.setText("Load");
-        load_button.addActionListener(new java.awt.event.ActionListener() {
+        loadButton.setText("Load");
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                load_buttonActionPerformed(evt);
+                loadButtonActionPerformed(evt);
             }
         });
 
@@ -58,8 +58,8 @@ public class ConnectionsView extends javax.swing.JFrame {
                     .addComponent(connection_scroller)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label)
-                            .addComponent(load_button))
+                            .addComponent(headerLabel)
+                            .addComponent(loadButton))
                         .addGap(0, 241, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -67,20 +67,20 @@ public class ConnectionsView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(label)
+                .addComponent(headerLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(connection_scroller, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(load_button)
+                .addComponent(loadButton)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void load_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_load_buttonActionPerformed
+    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_load_buttonActionPerformed
+    }//GEN-LAST:event_loadButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,8 +119,8 @@ public class ConnectionsView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane connection_scroller;
-    private javax.swing.JList connection_selector;
-    private javax.swing.JLabel label;
-    private javax.swing.JButton load_button;
+    private javax.swing.JList connectionsSelector;
+    private javax.swing.JLabel headerLabel;
+    private javax.swing.JButton loadButton;
     // End of variables declaration//GEN-END:variables
 }

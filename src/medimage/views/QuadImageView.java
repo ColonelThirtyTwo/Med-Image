@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package medimage.views;
 
 /**
- *
+ * Displays 4 images in a 2x2 grid.
  * @author col32
  */
 public class QuadImageView extends javax.swing.JFrame {
@@ -17,6 +12,22 @@ public class QuadImageView extends javax.swing.JFrame {
      */
     public QuadImageView() {
         initComponents();
+    }
+    
+    /**
+     * Scrolls to the next set of images.
+     * Does nothing if displaying the last set of images.
+     */
+    public void gotoNextImages() {
+        
+    }
+    
+    /**
+     * Scrolls to the previous set of images.
+     * Does nothing if displaying the first set of images.
+     */
+    public void gotoPrevImages() {
+        
     }
 
     /**
@@ -28,33 +39,59 @@ public class QuadImageView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        switch_view_layout = new javax.swing.JButton();
-        back_button = new javax.swing.JButton();
-        image_grid_panel = new javax.swing.JPanel();
-        image_1 = new javax.swing.JLabel();
-        image_2 = new javax.swing.JLabel();
-        image_3 = new javax.swing.JLabel();
-        image_4 = new javax.swing.JLabel();
+        switchViewLayout = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+        imageContainer = new javax.swing.JPanel();
+        image1 = new javax.swing.JLabel();
+        image2 = new javax.swing.JLabel();
+        image3 = new javax.swing.JLabel();
+        image4 = new javax.swing.JLabel();
+        nextButton = new javax.swing.JButton();
+        prevButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        switch_view_layout.setText("Switch to Single Image View");
+        switchViewLayout.setText("Switch to Single Image View");
+        switchViewLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                switchViewLayoutActionPerformed(evt);
+            }
+        });
 
-        back_button.setText("Back");
+        backButton.setText("Back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
-        image_grid_panel.setLayout(new java.awt.GridLayout(2, 2));
+        imageContainer.setLayout(new java.awt.GridLayout(2, 2));
 
-        image_1.setText("<Image 1>");
-        image_grid_panel.add(image_1);
+        image1.setText("<Image 1>");
+        imageContainer.add(image1);
 
-        image_2.setText("<Image 2>");
-        image_grid_panel.add(image_2);
+        image2.setText("<Image 2>");
+        imageContainer.add(image2);
 
-        image_3.setText("<Image 3>");
-        image_grid_panel.add(image_3);
+        image3.setText("<Image 3>");
+        imageContainer.add(image3);
 
-        image_4.setText("<Image 4>");
-        image_grid_panel.add(image_4);
+        image4.setText("<Image 4>");
+        imageContainer.add(image4);
+
+        nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        prevButton.setText("Prev");
+        prevButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prevButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,30 +101,53 @@ public class QuadImageView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(switch_view_layout))
+                        .addComponent(switchViewLayout))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(321, 321, 321)
-                        .addComponent(back_button)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(prevButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                        .addComponent(backButton)))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(image_grid_panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(imageContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(switch_view_layout)
+                .addComponent(switchViewLayout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(image_grid_panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imageContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(back_button)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(backButton)
+                    .addComponent(nextButton)
+                    .addComponent(prevButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        gotoNextImages();
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void switchViewLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchViewLayoutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_switchViewLayoutActionPerformed
+
+    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        gotoPrevImages();
+    }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_backButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,12 +185,14 @@ public class QuadImageView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton back_button;
-    private javax.swing.JLabel image_1;
-    private javax.swing.JLabel image_2;
-    private javax.swing.JLabel image_3;
-    private javax.swing.JLabel image_4;
-    private javax.swing.JPanel image_grid_panel;
-    private javax.swing.JButton switch_view_layout;
+    private javax.swing.JButton backButton;
+    private javax.swing.JLabel image1;
+    private javax.swing.JLabel image2;
+    private javax.swing.JLabel image3;
+    private javax.swing.JLabel image4;
+    private javax.swing.JPanel imageContainer;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton prevButton;
+    private javax.swing.JButton switchViewLayout;
     // End of variables declaration//GEN-END:variables
 }
