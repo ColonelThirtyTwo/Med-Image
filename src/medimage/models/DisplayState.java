@@ -54,7 +54,7 @@ public class DisplayState implements Serializable {
     /**
      * Getter for currState.
      *
-     * @return
+     * @return the current state
      */
     public States getCurrState() {
         return currState;
@@ -63,7 +63,7 @@ public class DisplayState implements Serializable {
     /**
      * Getter for imageIndex.
      *
-     * @return
+     * @return the index of the current image
      */
     public int getImageIndex() {
         return imageIndex;
