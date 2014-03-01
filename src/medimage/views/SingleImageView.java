@@ -45,14 +45,14 @@ public class SingleImageView extends javax.swing.JFrame {
         this.conn = conn;
         this.study = study;
         this.iterator = new SingleImageIterator(study.getImages(), index);
-        this.updateImage();
+        this.updateImageUI();
         this.pack();
     }
     
     /**
      * Updates the UI with the current contents of the image iterator.
      */
-    private void updateImage() {
+    private void updateImageUI() {
         this.image.setIcon(new ImageIcon(this.iterator.getImages()[0].getImageData()));
         this.image.setText("");
     }
@@ -191,7 +191,7 @@ public class SingleImageView extends javax.swing.JFrame {
      */
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         iterator.prev();
-        this.updateImage();
+        this.updateImageUI();
     }//GEN-LAST:event_prevButtonActionPerformed
     
     /**
@@ -200,7 +200,7 @@ public class SingleImageView extends javax.swing.JFrame {
      */
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         iterator.next();
-        this.updateImage();
+        this.updateImageUI();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void saveStateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStateButtonActionPerformed

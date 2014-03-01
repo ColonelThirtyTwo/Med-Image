@@ -15,6 +15,7 @@ import medimage.models.Image;
  */
 public class LocalImage extends Image {
     
+    private String name;
     private BufferedImage image;
     
     /**
@@ -22,6 +23,7 @@ public class LocalImage extends Image {
      * @param f File of the image.
      */
     public LocalImage(File f) {
+        name = f.getName();
         try {
             image = ImageIO.read(f);
         } catch (IOException ex) {
@@ -32,6 +34,11 @@ public class LocalImage extends Image {
     @Override
     public BufferedImage getImageData() {
         return image;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
     
 }

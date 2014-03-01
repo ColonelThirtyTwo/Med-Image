@@ -14,4 +14,10 @@ public abstract class Image {
      * @return Image data.
      */
     public abstract BufferedImage getImageData();
+    
+    /**
+     * Returns the name of the image.
+     * @return 
+     */
+    public abstract String getName();
 }

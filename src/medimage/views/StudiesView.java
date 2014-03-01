@@ -1,11 +1,14 @@
 
 package medimage.views;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import medimage.MedImage;
 import medimage.models.Connection;
 import medimage.models.DisplayState;
 import medimage.models.Study;
+import medimage.models.local.LocalConnection;
 
 /**
  * View for listing all the studies of a connection.
@@ -30,6 +33,13 @@ public class StudiesView extends javax.swing.JFrame {
     {
         this.setVisible(true);
         this.connection = connection;
+        this.updateStudiesUI();
+    }
+    
+    /**
+     * Refreshes the studies list.
+     */
+    private void updateStudiesUI() {
         List<Study> studies = connection.getStudies();
         
         // Convert to array
@@ -53,6 +63,7 @@ public class StudiesView extends javax.swing.JFrame {
         studiesList = new javax.swing.JList<medimage.models.Study>();
         loadButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
+        copyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MedImage");
@@ -67,7 +78,7 @@ public class StudiesView extends javax.swing.JFrame {
         studiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         studiesContainer.setViewportView(studiesList);
 
-        loadButton.setText("View Study");
+        loadButton.setText("View");
         loadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadButtonActionPerformed(evt);
@@ -81,6 +92,13 @@ public class StudiesView extends javax.swing.JFrame {
             }
         });
 
+        copyButton.setText("Copy");
+        copyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,7 +109,9 @@ public class StudiesView extends javax.swing.JFrame {
                     .addComponent(studiesContainer)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loadButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(copyButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                         .addComponent(backButton))
                     .addComponent(label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -106,7 +126,8 @@ public class StudiesView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadButton)
-                    .addComponent(backButton))
+                    .addComponent(backButton)
+                    .addComponent(copyButton))
                 .addContainerGap())
         );
 
@@ -136,16 +157,43 @@ public class StudiesView extends javax.swing.JFrame {
         Study study = this.studiesList.getSelectedValue();
         DisplayState state = study.getDisplayState();
         
-        if(state == null)
+        if(state == null) // No previous display state
             MedImage.getSingleImageView().viewImages(connection, study);
-        else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE)
+        else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE) // Single image display state
             MedImage.getSingleImageView().viewImages(connection, study, state.getImageIndex());
-        else
+        else // Quad image display state
             MedImage.getQuadImageView().viewImages(connection, study, state.getImageIndex());
     }//GEN-LAST:event_loadButtonActionPerformed
+    
+    /**
+     * Callback for copy button. Opens the copy view for study copying.
+     * @param evt 
+     * @see medimage.views.CopyStudyView
+     */
+    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
+        Study study = this.studiesList.getSelectedValue();
+        if(study == null)
+            return; // No study selected.
+        
+        // Can only copy to local connection
+        Connection[] connections = new Connection[] { new LocalConnection() };
+        
+        // Create dialog
+        CopyStudyView diag = new CopyStudyView(this, study, connections);
+        diag.setVisible(true);
+        
+        // Update when the window closes, in case we copy to the viewed study.
+        diag.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                updateStudiesUI();
+            }
+        });
+    }//GEN-LAST:event_copyButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
+    private javax.swing.JButton copyButton;
     private javax.swing.JLabel label;
     private javax.swing.JButton loadButton;
     private javax.swing.JScrollPane studiesContainer;

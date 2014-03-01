@@ -47,14 +47,14 @@ public class QuadImageView extends javax.swing.JFrame {
         this.conn = conn;
         this.study = study;
         this.iterator = new QuadImageIterator(study.getImages(), index);
-        this.updateImage();
+        this.updateImageUI();
         this.pack();
     }
     
     /**
      * Updates the UI with the current contents of the image iterator.
      */
-    private void updateImage() {
+    private void updateImageUI() {
         Image[] images = iterator.getImages();
         JLabel[] labels = {image1, image2, image3, image4};
         
@@ -202,7 +202,7 @@ public class QuadImageView extends javax.swing.JFrame {
      */
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         iterator.next();
-        this.updateImage();
+        this.updateImageUI();
     }//GEN-LAST:event_nextButtonActionPerformed
     
     /**
@@ -220,7 +220,7 @@ public class QuadImageView extends javax.swing.JFrame {
      */
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         iterator.prev();
-        this.updateImage();
+        this.updateImageUI();
     }//GEN-LAST:event_prevButtonActionPerformed
     
     /**

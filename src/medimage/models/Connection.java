@@ -16,6 +16,13 @@ public abstract class Connection {
      */
     public abstract List<Study> getStudies();
     
+    /**
+     * Copies a study through the connection.
+     * @param newName Name of the destination study to create.
+     * @param study The source study.
+     */
+    public abstract void copyStudyInto(String newName, Study study);
+    
     @Override
     public String toString() {
         return "Local Connection";

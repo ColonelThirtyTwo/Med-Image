@@ -1,8 +1,6 @@
 
 package medimage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import medimage.views.ConnectionsView;
 import medimage.views.QuadImageView;
 import medimage.views.SingleImageView;
@@ -10,6 +8,9 @@ import medimage.views.StudiesView;
 
 /**
  * Class that holds the main method.
+ * This class also holds all of the views. The program switches between views
+ * by hiding the previous one and making visible the next one. The program
+ * terminates when there are no visible views left.
  * @author col32
  */
 public class MedImage {
