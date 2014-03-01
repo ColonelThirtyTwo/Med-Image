@@ -54,7 +54,7 @@ public class DisplayState implements Serializable {
     /**
      * Getter for currState.
      *
-     * @return
+     * @return the current state
      */
     public States getCurrState() {
         return currState;
@@ -63,7 +63,7 @@ public class DisplayState implements Serializable {
     /**
      * Getter for imageIndex.
      *
-     * @return
+     * @return the index of the current image
      */
     public int getImageIndex() {
         return imageIndex;
@@ -95,15 +95,15 @@ public class DisplayState implements Serializable {
     /**
      * Loads a DisplayState from a file serialized with the serialize method
      *
-     * @param serilizedObject Path to the file to read from.
+     * @param serializedObject Path to the file to read from.
      * @return The deserialized object.
      * @throws FileNotFoundException
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static Object deSerialize(String serilizedObject)
+    public static Object deSerialize(String serializedObject)
             throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(serilizedObject);
+        FileInputStream fis = new FileInputStream(serializedObject);
         ObjectInputStream ois = new ObjectInputStream(fis);
         return ois.readObject();
     }
