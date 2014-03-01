@@ -12,10 +12,10 @@ public abstract class Connection {
     
     /**
      * Gets the studies that this data source knows about.
-     * @return list of studies.
+     * @return List of studies.
      */
     public abstract List<Study> getStudies();
-
+    
     @Override
     public String toString() {
         return "Local Connection";

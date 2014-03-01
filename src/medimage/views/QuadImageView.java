@@ -69,8 +69,8 @@ public class QuadImageView extends javax.swing.JFrame {
     }
     
     /**
-     * Creates a display state.
-     * @return 
+     * Creates a display state from the currently viewed image.
+     * @return Current display state.
      */
     private DisplayState getDisplayState() {
         return new DisplayState(DisplayState.States.QUAD_IMAGE, this.iterator.getIndex());
@@ -195,66 +195,51 @@ public class QuadImageView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Callback for the next button. Scrolls to the next set of images.
+     * @param evt 
+     */
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         iterator.next();
         this.updateImage();
     }//GEN-LAST:event_nextButtonActionPerformed
-
+    
+    /**
+     * Callback for the switch view button. Switches to the single image view.
+     * @param evt 
+     */
     private void switchViewLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchViewLayoutActionPerformed
         this.setVisible(false);
         MedImage.getSingleImageView().viewImages(conn, study, iterator.getIndex());
     }//GEN-LAST:event_switchViewLayoutActionPerformed
-
+    
+    /**
+     * Callback for the prev button. Scrolls to the previous set of images.
+     * @param evt 
+     */
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
         iterator.prev();
         this.updateImage();
     }//GEN-LAST:event_prevButtonActionPerformed
-
+    
+    /**
+     * Callback for the back button. Returns to the studies view.
+     * @param evt 
+     */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         MedImage.getStudiesView().viewStudies(conn);
     }//GEN-LAST:event_backButtonActionPerformed
-
+    
+    /**
+     * Callback for the save state button. Saves the current display state.
+     * @param evt 
+     */
     private void saveStateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStateButtonActionPerformed
         DisplayState state = this.getDisplayState();
         study.saveDisplayState(state);
     }//GEN-LAST:event_saveStateButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuadImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuadImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuadImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuadImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new QuadImageView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;

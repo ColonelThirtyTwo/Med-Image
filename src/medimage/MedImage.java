@@ -55,7 +55,7 @@ public class MedImage {
      * Main method
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
+    public static void main(String[] args) {
         // Creates all the views, but hide all but the connections view.
         connectionsView = new ConnectionsView();
         studiesView = new StudiesView();

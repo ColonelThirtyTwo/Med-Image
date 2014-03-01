@@ -4,14 +4,14 @@ package medimage.models;
 import java.awt.image.BufferedImage;
 
 /**
- * Represents an image.
+ * Represents an image in a study.
  * @author col32
  */
 public abstract class Image {
     
     /**
      * Gets the image data.
-     * @return the image data.
+     * @return Image data.
      */
     public abstract BufferedImage getImageData();
 }

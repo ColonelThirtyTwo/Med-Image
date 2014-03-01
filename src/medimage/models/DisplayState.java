@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.io.*;
 
 /**
- * Creates the persistent save state.
+ * A plain-data object used to serialize what view and image to open a study
+ * at.
  *
  * @author jcdesimp
  */
@@ -41,8 +42,8 @@ public class DisplayState implements Serializable {
     /**
      * Constructor for DisplayState
      *
-     * @param currState
-     * @param imgIndex
+     * @param currState Current display mode
+     * @param imgIndex Current image index.
      */
     public DisplayState(States currState, int imgIndex) {
         this.currState = currState;
@@ -51,7 +52,7 @@ public class DisplayState implements Serializable {
     }
 
     /**
-     * Getter for currState
+     * Getter for currState.
      *
      * @return
      */
@@ -60,23 +61,28 @@ public class DisplayState implements Serializable {
     }
 
     /**
-     * getter for imageIndex
+     * Getter for imageIndex.
      *
      * @return
      */
     public int getImageIndex() {
         return imageIndex;
     }
-
+    
+    /**
+     * Compares display states.
+     * @param other Object to compare it to.
+     * @return True if equal.
+     */
     public boolean equals(DisplayState other) {
         return other.getCurrState() == this.getCurrState() &&
                 this.getImageIndex() == other.getImageIndex();
     }
     
     /**
-     * Method to to serialize object to specified file
+     * Writes the object to a file.
      *
-     * @param outFile
+     * @param outFile Path to the file to write to
      * @throws IOException
      */
     public void serialize(String outFile)
@@ -87,10 +93,10 @@ public class DisplayState implements Serializable {
     }
 
     /**
-     * Method to retrieve a stored DisplayState
+     * Loads a DisplayState from a file serialized with the serialize method
      *
-     * @param serilizedObject
-     * @return
+     * @param serilizedObject Path to the file to read from.
+     * @return The deserialized object.
      * @throws FileNotFoundException
      * @throws IOException
      * @throws ClassNotFoundException

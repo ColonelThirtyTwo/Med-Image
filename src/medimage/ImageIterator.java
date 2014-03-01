@@ -5,6 +5,11 @@ import medimage.models.Image;
 
 /**
  * Interface for image iterators, used for scrolling.
+ * This iterator interface doesn't behave like normal Java iterators. Instead,
+ * it behaves more like a tape drive; there's the currently read data, as well
+ * as functions to scroll it left or right. This is needed as the view may need
+ * to get the images multiple times without scrolling, and serializing Java-style
+ * iterators can get challenging.
  * @author col32
  */
 public interface ImageIterator {
@@ -23,13 +28,13 @@ public interface ImageIterator {
     
     /**
      * Returns the current image set.
-     * @return image set. Items in here can be null.
+     * @return Image set, which may contain null items.
      */
     public abstract Image[] getImages();
     
     /**
      * Gets the index of the current image set.
-     * @return index.
+     * @return Index.
      */
     public abstract int getIndex();
     

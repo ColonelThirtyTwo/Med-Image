@@ -8,7 +8,8 @@ import medimage.models.Connection;
 import medimage.models.Study;
 
 /**
- * A 'connection' to the local filesystem.
+ * A 'connection' to the local filesystem. Allows access to studies in the
+ * './studies/' folder relative to the current working directory.
  * @author col32
  */
 public class LocalConnection extends Connection {
@@ -18,10 +19,6 @@ public class LocalConnection extends Connection {
     public LocalConnection() {
     }
     
-    /**
-     * Loads studies.
-     * @return List of studies.
-     */
     @Override
     public List<Study> getStudies() {
         File folder = new File("./studies/");

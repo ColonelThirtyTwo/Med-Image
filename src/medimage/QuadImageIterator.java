@@ -63,6 +63,11 @@ public class QuadImageIterator implements ImageIterator {
         return index;
     }
     
+    /**
+     * Returns the image at the index, or null if the index is out of bounds.
+     * @param i Index of image.
+     * @return Image or null.
+     */
     private Image getOrNull(int i) {
         if(i >= images.size())
             return null;

@@ -29,10 +29,6 @@ public class LocalImage extends Image {
         }
     }
     
-    /**
-     * Returns the image data.
-     * @return image data.
-     */
     @Override
     public BufferedImage getImageData() {
         return image;

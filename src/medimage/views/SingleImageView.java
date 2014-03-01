@@ -58,8 +58,8 @@ public class SingleImageView extends javax.swing.JFrame {
     }
     
     /**
-     * Creates a display state.
-     * @return 
+     * Creates a display state from the currently viewed image.
+     * @return Current display state.
      */
     private DisplayState getDisplayState() {
         return new DisplayState(DisplayState.States.SINGLE_IMAGE, this.iterator.getIndex());
@@ -166,21 +166,27 @@ public class SingleImageView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     /**
-     * Returns to the studies list.
+     * Callback for the back button. Returns to the studies view.
      * @param evt 
+     * @see medimage.views.StudiesView
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         this.setVisible(false);
         MedImage.getStudiesView().viewStudies(conn);
     }//GEN-LAST:event_backButtonActionPerformed
-
+    
+    /**
+     * Callback for switch layout button. Goes to the quad image view.
+     * @param evt 
+     * @see medimage.views.QuadImageView
+     */
     private void switchViewLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchViewLayoutActionPerformed
         this.setVisible(false);
         MedImage.getQuadImageView().viewImages(conn, study, iterator.getIndex());
     }//GEN-LAST:event_switchViewLayoutActionPerformed
 
     /**
-     * Scrolls to the next image set.
+     * Callback for the prev button. Scrolls to the previous set of images.
      * @param evt 
      */
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
@@ -189,7 +195,7 @@ public class SingleImageView extends javax.swing.JFrame {
     }//GEN-LAST:event_prevButtonActionPerformed
     
     /**
-     * Scrolls to the previous image set.
+     * Callback for the next button. Scrolls to the next set of images.
      * @param evt 
      */
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
@@ -201,41 +207,6 @@ public class SingleImageView extends javax.swing.JFrame {
         DisplayState state = this.getDisplayState();
         study.saveDisplayState(state);
     }//GEN-LAST:event_saveStateButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SingleImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SingleImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SingleImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SingleImageView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SingleImageView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
