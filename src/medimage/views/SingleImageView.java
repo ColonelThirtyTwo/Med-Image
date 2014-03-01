@@ -20,6 +20,7 @@ public class SingleImageView extends ImageView {
      */
     public SingleImageView() {
         initComponents();
+        this.setOnCloseHandler();
     }
     
     /**
@@ -137,8 +138,7 @@ public class SingleImageView extends ImageView {
      * @see medimage.views.StudiesView
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        MedImage.getStudiesView().viewStudies(conn);
+        doBackButton();
     }//GEN-LAST:event_backButtonActionPerformed
     
     /**

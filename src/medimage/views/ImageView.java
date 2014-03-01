@@ -1,11 +1,15 @@
 
 package medimage.views;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import medimage.ImageIterator;
+import medimage.MedImage;
 import medimage.models.Connection;
 import medimage.models.DisplayState;
 import medimage.models.Image;
@@ -21,6 +25,64 @@ public abstract class ImageView extends JFrame {
     protected ImageIterator iterator;
 
     public ImageView() {
+    }
+    
+    /**
+     * Asks the user to save the display state, if needed.
+     * @return True if user clicked 'yes' or 'no', or if the state hasn't changed.
+     * False if the user clicked 'cancel' or closed the dialog box.
+     */
+    private boolean promptSaveState() {
+        if(this.getDisplayState().equals(study.getDisplayState())) // Don't warn if nothing to save.
+            return true;
+
+        //Custom button text
+        Object[] options = {"Yes",
+                            "No",
+                            "Cancel"};
+        int n = JOptionPane.showOptionDialog(ImageView.this,
+            "Save Display State?",
+            "MedImage",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[2]);
+
+        if(n == 0) { // "Yes", save display state
+            study.saveDisplayState(getDisplayState());
+        }
+        
+        // If user clicked yes or no, follow through with action. Otherwise, if
+        // user clicked cancel or closed dialog, cancel action.
+        return n != 2 && n != JOptionPane.CLOSED_OPTION;
+    }
+    
+    /**
+     * Sets the close handler to prompt the user to save state before closing.
+     * Call last in the constructor.
+     */
+    protected final void setOnCloseHandler() {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                if(promptSaveState())
+                    System.exit(0);
+            }
+        });
+    }
+    
+    /**
+     * Executes the back button. Prompts the user to save the state, then
+     * go to studies list.
+     */
+    protected void doBackButton() {                                           
+        if(promptSaveState())
+        {
+            this.setVisible(false);
+            MedImage.getStudiesView().viewStudies(conn);
+        }
     }
 
     /**

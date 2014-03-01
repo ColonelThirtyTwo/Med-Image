@@ -9,8 +9,7 @@ import medimage.views.StudiesView;
 /**
  * Class that holds the main method.
  * This class also holds all of the views. The program switches between views
- * by hiding the previous one and making visible the next one. The program
- * terminates when there are no visible views left.
+ * by hiding the previous one and making visible the next one.
  * @author col32
  */
 public class MedImage {
@@ -66,13 +65,5 @@ public class MedImage {
         studiesView.setVisible(false);
         singleImageView.setVisible(false);
         quadImageView.setVisible(false);
-        
-        /*
-        DisplayState testState = new DisplayState(DisplayState.States.SINGLE_IMAGE, 3);
-        testState.serialize("test.ser");
-        DisplayState newState = (DisplayState) DisplayState.deSerialize("test.ser");
-        System.out.println("DisplayState: " + newState.getCurrState() + " --  ImageIndex: " + newState.getImageIndex());
-        */
     }
-    
 }

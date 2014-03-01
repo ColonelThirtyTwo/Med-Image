@@ -20,6 +20,7 @@ public class QuadImageView extends ImageView {
      */
     public QuadImageView() {
         initComponents();
+        this.setOnCloseHandler();
     }
     
     /**
@@ -183,8 +184,7 @@ public class QuadImageView extends ImageView {
      * @param evt 
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        this.setVisible(false);
-        MedImage.getStudiesView().viewStudies(conn);
+        doBackButton();
     }//GEN-LAST:event_backButtonActionPerformed
     
     /**

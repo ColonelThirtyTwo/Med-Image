@@ -75,6 +75,7 @@ public class DisplayState implements Serializable {
      * @return True if equal.
      */
     public boolean equals(DisplayState other) {
+        if(other == null) return false;
         return other.getCurrState() == this.getCurrState() &&
                 this.getImageIndex() == other.getImageIndex();
     }
