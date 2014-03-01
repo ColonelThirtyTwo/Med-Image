@@ -136,8 +136,6 @@ public class StudiesView extends javax.swing.JFrame {
         Study study = this.studiesList.getSelectedValue();
         DisplayState state = study.getDisplayState();
         
-        System.out.println(state);
-        
         if(state == null)
             MedImage.getSingleImageView().viewImages(connection, study);
         else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE)

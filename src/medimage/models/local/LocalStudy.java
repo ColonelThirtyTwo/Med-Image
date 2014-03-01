@@ -4,6 +4,7 @@ package medimage.models.local;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ public class LocalStudy extends Study {
     @Override
     public List<Image> getImages() {
         File[] imageFiles = directory.listFiles();
+        Arrays.sort(imageFiles);
         
         List<Image> list = new ArrayList<Image>();
         

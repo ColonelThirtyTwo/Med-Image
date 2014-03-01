@@ -16,7 +16,8 @@ public abstract class Study {
     public abstract String getName();
     
     /**
-     * Gets the list of images that this study contains.
+     * Gets the list of images that this study contains. Images should be
+     * ordered.
      * @return 
      */
     public abstract List<Image> getImages();
