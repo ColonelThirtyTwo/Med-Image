@@ -1,22 +1,19 @@
 
 package medimage.views;
 
-import javax.swing.ImageIcon;
+import java.util.List;
+import javax.swing.JLabel;
+import medimage.ImageIterator;
 import medimage.MedImage;
 import medimage.SingleImageIterator;
-import medimage.models.Connection;
 import medimage.models.DisplayState;
-import medimage.models.Study;
+import medimage.models.Image;
 
 /**
  * View for viewing images in a study one-at-a-time.
  * @author col32
  */
-public class SingleImageView extends javax.swing.JFrame {
-    
-    private Connection conn;
-    private Study study;
-    private SingleImageIterator iterator;
+public class SingleImageView extends ImageView {
     
     /**
      * Creates new form SingleImageView
@@ -26,42 +23,11 @@ public class SingleImageView extends javax.swing.JFrame {
     }
     
     /**
-     * Updates the UI to view a list of images and makes the frame visible.
-     * @param conn Connection of the study
-     * @param study Study to view images from
-     */
-    public void viewImages(Connection conn, Study study) {
-        this.viewImages(conn, study, 0);
-    }
-    
-    /**
-     * Updates the UI to view a list of images and makes the frame visible.
-     * @param conn Connection of the study
-     * @param study Study to view images from
-     * @param index Index of image to view.
-     */
-    public void viewImages(Connection conn, Study study, int index) {
-        this.setVisible(true);
-        this.conn = conn;
-        this.study = study;
-        this.iterator = new SingleImageIterator(study.getImages(), index);
-        this.updateImageUI();
-        this.pack();
-    }
-    
-    /**
-     * Updates the UI with the current contents of the image iterator.
-     */
-    private void updateImageUI() {
-        this.image.setIcon(new ImageIcon(this.iterator.getImages()[0].getImageData()));
-        this.image.setText("");
-    }
-    
-    /**
      * Creates a display state from the currently viewed image.
      * @return Current display state.
      */
-    private DisplayState getDisplayState() {
+    @Override
+    protected DisplayState getDisplayState() {
         return new DisplayState(DisplayState.States.SINGLE_IMAGE, this.iterator.getIndex());
     }
     
@@ -216,4 +182,14 @@ public class SingleImageView extends javax.swing.JFrame {
     private javax.swing.JButton saveStateButton;
     private javax.swing.JButton switchViewLayout;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    protected JLabel[] getImageContainers() {
+        return new JLabel[] { image };
+    }
+
+    @Override
+    protected ImageIterator createIterator(List<Image> images, int index) {
+        return new SingleImageIterator(images, index);
+    }
 }

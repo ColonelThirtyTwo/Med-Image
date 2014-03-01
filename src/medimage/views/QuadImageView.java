@@ -1,24 +1,19 @@
 
 package medimage.views;
 
-import javax.swing.ImageIcon;
+import java.util.List;
 import javax.swing.JLabel;
+import medimage.ImageIterator;
 import medimage.MedImage;
 import medimage.QuadImageIterator;
-import medimage.models.Connection;
 import medimage.models.DisplayState;
 import medimage.models.Image;
-import medimage.models.Study;
 
 /**
  * Displays 4 images in a 2x2 grid.
  * @author col32
  */
-public class QuadImageView extends javax.swing.JFrame {
-    
-    private Connection conn;
-    private Study study;
-    private QuadImageIterator iterator;
+public class QuadImageView extends ImageView {
     
     /**
      * Creates new form QuadImageView
@@ -28,51 +23,11 @@ public class QuadImageView extends javax.swing.JFrame {
     }
     
     /**
-     * Updates the UI to view a list of images and makes the frame visible.
-     * @param conn Connection of the study
-     * @param study Study to view images from
-     */
-    public void viewImages(Connection conn, Study study) {
-        this.viewImages(conn, study, 0);
-    }
-    
-    /**
-     * Updates the UI to view a list of images and makes the frame visible.
-     * @param conn Connection of the study
-     * @param study Study to view images from
-     * @param index Index of image to view.
-     */
-    public void viewImages(Connection conn, Study study, int index) {
-        this.setVisible(true);
-        this.conn = conn;
-        this.study = study;
-        this.iterator = new QuadImageIterator(study.getImages(), index);
-        this.updateImageUI();
-        this.pack();
-    }
-    
-    /**
-     * Updates the UI with the current contents of the image iterator.
-     */
-    private void updateImageUI() {
-        Image[] images = iterator.getImages();
-        JLabel[] labels = {image1, image2, image3, image4};
-        
-        for(int i=0; i<4; i++)
-        {
-            if(images[i] == null)
-                labels[i].setIcon(null);
-            else
-                labels[i].setIcon(new ImageIcon(images[i].getImageData()));
-            labels[i].setText("");
-        }
-    }
-    
-    /**
      * Creates a display state from the currently viewed image.
      * @return Current display state.
      */
-    private DisplayState getDisplayState() {
+    @Override
+    protected DisplayState getDisplayState() {
         return new DisplayState(DisplayState.States.QUAD_IMAGE, this.iterator.getIndex());
     }
     
@@ -253,4 +208,14 @@ public class QuadImageView extends javax.swing.JFrame {
     private javax.swing.JButton saveStateButton;
     private javax.swing.JButton switchViewLayout;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    protected JLabel[] getImageContainers() {
+        return new JLabel[] { image1, image2, image3, image4 };
+    }
+
+    @Override
+    protected ImageIterator createIterator(List<Image> images, int index) {
+        return new QuadImageIterator(images, index);
+    }
 }
