@@ -23,6 +23,18 @@ public abstract class Connection {
      */
     public abstract void copyStudyInto(String newName, Study study);
     
+    /**
+     * Gets the study to open when the application starts.
+     * @return Study, or null if no default set.
+     */
+    public abstract Study getDefaultStudy();
+    
+    /**
+     * Saves a study to open when the application starts.
+     * @param study Study, or null to unset.
+     */
+    public abstract void saveDefaultStudy(Study study);
+    
     @Override
     public String toString() {
         return "Local Connection";

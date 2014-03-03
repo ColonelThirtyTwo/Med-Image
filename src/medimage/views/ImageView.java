@@ -81,7 +81,7 @@ public abstract class ImageView extends JFrame {
         if(promptSaveState())
         {
             this.setVisible(false);
-            MedImage.getStudiesView().viewStudies(conn);
+            MedImage.getStudiesView().viewStudies(conn, true);
         }
     }
 

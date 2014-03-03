@@ -29,11 +29,30 @@ public class StudiesView extends javax.swing.JFrame {
      * Updates the UI to view a list of studies and makes the frame visible.
      * @param connection Connection to get studies from.
      */
-    public void viewStudies(Connection connection)
+    public void viewStudies(Connection connection) {
+        this.viewStudies(connection, false);
+    }
+    
+    /**
+     * Updates the UI to view a list of studies and makes the frame visible.
+     * @param connection Connection to get studies from.
+     * @param dontLoadDefault Set to true to prevent loading of the default study.
+     */
+    public void viewStudies(Connection connection, boolean dontLoadDefault)
     {
-        this.setVisible(true);
         this.connection = connection;
-        this.updateStudiesUI();
+        
+        // Check for default study
+        Study deflt = connection.getDefaultStudy();
+        if(!dontLoadDefault && deflt != null)
+            // Load default study instead
+            this.loadStudy(deflt);
+        else
+        {
+            // Show study picker
+            this.setVisible(true);
+            this.updateStudiesUI();
+        }
     }
     
     /**
@@ -47,6 +66,22 @@ public class StudiesView extends javax.swing.JFrame {
         studies.toArray(studiesArr);
         
         this.studiesList.setListData(studiesArr);
+    }
+    
+    /**
+     * Views a study. Loads the display state and transitions to the appropriate
+     * image view.
+     * @param study Study to view.
+     */
+    private void loadStudy(Study study) {
+        DisplayState state = study.getDisplayState();
+        
+        if(state == null) // No previous display state
+            MedImage.getSingleImageView().viewImages(connection, study);
+        else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE) // Single image display state
+            MedImage.getSingleImageView().viewImages(connection, study, state.getImageIndex());
+        else // Quad image display state
+            MedImage.getQuadImageView().viewImages(connection, study, state.getImageIndex());
     }
     
     /**
@@ -64,6 +99,7 @@ public class StudiesView extends javax.swing.JFrame {
         loadButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         copyButton = new javax.swing.JButton();
+        setDefaultStudyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MedImage");
@@ -99,6 +135,13 @@ public class StudiesView extends javax.swing.JFrame {
             }
         });
 
+        setDefaultStudyButton.setText("Set Default");
+        setDefaultStudyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setDefaultStudyButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,7 +154,9 @@ public class StudiesView extends javax.swing.JFrame {
                         .addComponent(loadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(copyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addComponent(setDefaultStudyButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(backButton))
                     .addComponent(label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -127,7 +172,8 @@ public class StudiesView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadButton)
                     .addComponent(backButton)
-                    .addComponent(copyButton))
+                    .addComponent(copyButton)
+                    .addComponent(setDefaultStudyButton))
                 .addContainerGap())
         );
 
@@ -155,14 +201,7 @@ public class StudiesView extends javax.swing.JFrame {
         this.setVisible(false);
         
         Study study = this.studiesList.getSelectedValue();
-        DisplayState state = study.getDisplayState();
-        
-        if(state == null) // No previous display state
-            MedImage.getSingleImageView().viewImages(connection, study);
-        else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE) // Single image display state
-            MedImage.getSingleImageView().viewImages(connection, study, state.getImageIndex());
-        else // Quad image display state
-            MedImage.getQuadImageView().viewImages(connection, study, state.getImageIndex());
+        this.loadStudy(study);
     }//GEN-LAST:event_loadButtonActionPerformed
     
     /**
@@ -190,12 +229,23 @@ public class StudiesView extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_copyButtonActionPerformed
+    
+    /**
+     * Callback for the set default study button. Opens a dialog box for setting
+     * the default study.
+     * @param evt 
+     */
+    private void setDefaultStudyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setDefaultStudyButtonActionPerformed
+        DefaultStudyView view = new DefaultStudyView(this, connection);
+        view.setVisible(true);
+    }//GEN-LAST:event_setDefaultStudyButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JButton copyButton;
     private javax.swing.JLabel label;
     private javax.swing.JButton loadButton;
+    private javax.swing.JButton setDefaultStudyButton;
     private javax.swing.JScrollPane studiesContainer;
     private javax.swing.JList<medimage.models.Study> studiesList;
     // End of variables declaration//GEN-END:variables

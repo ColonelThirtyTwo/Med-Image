@@ -32,7 +32,9 @@
                       <Component id="loadButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="copyButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="160" max="32767" attributes="0"/>
+                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                      <Component id="setDefaultStudyButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="backButton" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="label" max="32767" attributes="0"/>
@@ -53,6 +55,7 @@
                   <Component id="loadButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="copyButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="setDefaultStudyButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -113,6 +116,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="setDefaultStudyButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Set Default"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setDefaultStudyButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

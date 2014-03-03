@@ -71,6 +71,7 @@ public class LocalStudy extends Study {
         try {
             state.serialize(f.getPath());
         } catch (IOException ex) {
+            // Can't do anything about it
             Logger.getLogger(LocalStudy.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
