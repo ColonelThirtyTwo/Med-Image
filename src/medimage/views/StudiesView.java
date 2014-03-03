@@ -50,8 +50,8 @@ public class StudiesView extends javax.swing.JFrame {
         else
         {
             // Show study picker
-            this.setVisible(true);
             this.updateStudiesUI();
+            this.setVisible(true);
         }
     }
     
@@ -74,6 +74,11 @@ public class StudiesView extends javax.swing.JFrame {
      * @param study Study to view.
      */
     private void loadStudy(Study study) {
+        // Do nothing if nothing selected.
+        if(study == null)
+            return;
+        
+        // Get previous display state.
         DisplayState state = study.getDisplayState();
         
         if(state == null) // No previous display state

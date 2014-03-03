@@ -101,12 +101,12 @@ public abstract class ImageView extends JFrame {
      * @param index Index of image to view.
      */
     public void viewImages(Connection conn, Study study, int index) {
-        this.setVisible(true);
         this.conn = conn;
         this.study = study;
         this.iterator = createIterator(study.getImages(), index);
         this.updateImageUI();
         this.pack();
+        this.setVisible(true);
     }
     
     /**
@@ -130,6 +130,7 @@ public abstract class ImageView extends JFrame {
                 labels[i].setIcon(new ImageIcon(imgs[i].getImageData()));
             labels[i].setText("");
         }
+        this.setTitle(study.getName());
     }
 
     /**
