@@ -2,9 +2,8 @@
 package medimage;
 
 import medimage.views.ConnectionsView;
-import medimage.views.QuadImageView;
-import medimage.views.SingleImageView;
 import medimage.views.StudiesView;
+import medimage.views.improvedimageview.ImageView;
 
 /**
  * Class that holds the main method.
@@ -16,8 +15,7 @@ public class MedImage {
     
     private static ConnectionsView connectionsView;
     private static StudiesView studiesView;
-    private static SingleImageView singleImageView;
-    private static QuadImageView quadImageView;
+    private static ImageView imageView;
 
     /**
      * Gets the Connections JPanel
@@ -36,19 +34,11 @@ public class MedImage {
     }
     
     /**
-     * Gets the Single image viewer JPanel.
+     * Gets the Image View JPanel
      * @return panel
      */
-    public static SingleImageView getSingleImageView() {
-        return singleImageView;
-    }
-    
-    /**
-     * Gets the 2x2 Image viewer JPanel.
-     * @return panel.
-     */
-    public static QuadImageView getQuadImageView() {
-        return quadImageView;
+    public static ImageView getImageView() {
+        return imageView;
     }
     
     /**
@@ -59,11 +49,9 @@ public class MedImage {
         // Creates all the views, but hide all but the connections view.
         connectionsView = new ConnectionsView();
         studiesView = new StudiesView();
-        singleImageView = new SingleImageView();
-        quadImageView = new QuadImageView();
+        imageView = new ImageView();
         connectionsView.setVisible(true);
         studiesView.setVisible(false);
-        singleImageView.setVisible(false);
-        quadImageView.setVisible(false);
+        imageView.setVisible(false);
     }
 }

@@ -130,11 +130,11 @@ public class StudiesView extends javax.swing.JFrame {
         DisplayState state = study.getDisplayState();
         
         if(state == null) // No previous display state
-            MedImage.getSingleImageView().viewImages(connection, study);
+            MedImage.getImageView().viewSingleImage(connection, study, 0);
         else if(state.getCurrState() == DisplayState.States.SINGLE_IMAGE) // Single image display state
-            MedImage.getSingleImageView().viewImages(connection, study, state.getImageIndex());
+            MedImage.getImageView().viewSingleImage(connection, study, state.getImageIndex());
         else // Quad image display state
-            MedImage.getQuadImageView().viewImages(connection, study, state.getImageIndex());
+            MedImage.getImageView().viewQuadImage(connection, study, state.getImageIndex());
     }
     
     /**
