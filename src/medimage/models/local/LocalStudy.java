@@ -19,6 +19,7 @@ import medimage.models.Study;
 public class LocalStudy extends Study {
     
     private final File directory;
+    private List<Image> images;
     
     /**
      * Creates a study.
@@ -35,16 +36,19 @@ public class LocalStudy extends Study {
 
     @Override
     public List<Image> getImages() {
+        if(images != null)
+            return images;
+        
         File[] imageFiles = directory.listFiles();
         Arrays.sort(imageFiles);
         
-        List<Image> list = new ArrayList<Image>();
+        images = new ArrayList<Image>();
         
         for(File f : imageFiles)
             if(!f.getName().equals(".displaystate"))
-                list.add(new LocalImage(f));
+                images.add(new LocalImage(f));
         
-        return list;
+        return images;
     }
 
     @Override
