@@ -4,6 +4,9 @@ package medimage.views;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import medimage.MedImage;
 import medimage.models.Connection;
 import medimage.models.DisplayState;
@@ -15,7 +18,58 @@ import medimage.models.local.LocalConnection;
  * @author col32
  */
 public class StudiesView extends javax.swing.JFrame {
+    
+    /**
+     * Studies -> TreeModel adapter
+     */
+    private class StudiesTreeModel implements TreeModel {
+        @Override
+        public Object getRoot() {
+            return "Root";
+        }
+        
+        private List<Study> get(Object parent) {
+            if(parent.equals("Root"))
+                return connection.getStudies();
+            return ((Study)parent).getStudies();
+        }
 
+        @Override
+        public Object getChild(Object parent, int index) {
+            return get(parent).get(index);
+        }
+
+        @Override
+        public int getChildCount(Object parent) {
+            return get(parent).size();
+        }
+
+        @Override
+        public boolean isLeaf(Object node) {
+            return get(node).isEmpty();
+        }
+
+        @Override
+        public void valueForPathChanged(TreePath path, Object newValue) {
+            // Don't need this
+        }
+
+        @Override
+        public int getIndexOfChild(Object parent, Object child) {
+            return get(parent).indexOf(child);
+        }
+
+        @Override
+        public void addTreeModelListener(TreeModelListener l) {
+            // Don't need this
+        }
+
+        @Override
+        public void removeTreeModelListener(TreeModelListener l) {
+            // Don't need this
+        }
+    }
+    
     private Connection connection;
     
     /**
@@ -59,13 +113,7 @@ public class StudiesView extends javax.swing.JFrame {
      * Refreshes the studies list.
      */
     private void updateStudiesUI() {
-        List<Study> studies = connection.getStudies();
-        
-        // Convert to array
-        Study[] studiesArr = new Study[studies.size()];
-        studies.toArray(studiesArr);
-        
-        this.studiesList.setListData(studiesArr);
+        this.studiesList.setModel(new StudiesTreeModel());
     }
     
     /**
@@ -99,25 +147,17 @@ public class StudiesView extends javax.swing.JFrame {
     private void initComponents() {
 
         label = new javax.swing.JLabel();
-        studiesContainer = new javax.swing.JScrollPane();
-        studiesList = new javax.swing.JList<medimage.models.Study>();
         loadButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         copyButton = new javax.swing.JButton();
         setDefaultStudyButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        studiesList = new javax.swing.JTree();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MedImage");
 
         label.setText("Select Study");
-
-        studiesList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        studiesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        studiesContainer.setViewportView(studiesList);
 
         loadButton.setText("View");
         loadButton.addActionListener(new java.awt.event.ActionListener() {
@@ -147,23 +187,26 @@ public class StudiesView extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setViewportView(studiesList);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(studiesContainer)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
                         .addComponent(loadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(copyButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(setDefaultStudyButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(backButton))
-                    .addComponent(label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(label, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -172,8 +215,8 @@ public class StudiesView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(studiesContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadButton)
                     .addComponent(backButton)
@@ -205,7 +248,12 @@ public class StudiesView extends javax.swing.JFrame {
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         this.setVisible(false);
         
-        Study study = this.studiesList.getSelectedValue();
+        TreePath path = this.studiesList.getSelectionPath();
+        if(path == null || path.getLastPathComponent().equals("Root"))
+            return; // No study selected.
+        
+        Study study = (Study)path.getLastPathComponent();
+        
         this.loadStudy(study);
     }//GEN-LAST:event_loadButtonActionPerformed
     
@@ -215,9 +263,11 @@ public class StudiesView extends javax.swing.JFrame {
      * @see medimage.views.CopyStudyView
      */
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-        Study study = this.studiesList.getSelectedValue();
-        if(study == null)
+        TreePath path = this.studiesList.getSelectionPath();
+        if(path == null || path.getLastPathComponent().equals("Root"))
             return; // No study selected.
+        
+        Study study = (Study)path.getLastPathComponent();
         
         // Can only copy to local connection
         Connection[] connections = new Connection[] { new LocalConnection() };
@@ -248,10 +298,10 @@ public class StudiesView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JButton copyButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label;
     private javax.swing.JButton loadButton;
     private javax.swing.JButton setDefaultStudyButton;
-    private javax.swing.JScrollPane studiesContainer;
-    private javax.swing.JList<medimage.models.Study> studiesList;
+    private javax.swing.JTree studiesList;
     // End of variables declaration//GEN-END:variables
 }

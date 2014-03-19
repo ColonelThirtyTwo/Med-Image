@@ -17,7 +17,7 @@ import medimage.models.Image;
  */
 public class LocalImage extends Image {
     
-    private String name;
+    private final String name;
     private BufferedImage image;
     
     /**
@@ -92,7 +92,7 @@ public class LocalImage extends Image {
     public BufferedImage getImageData() {
         return image;
     }
-
+    
     @Override
     public String getName() {
         return name;
