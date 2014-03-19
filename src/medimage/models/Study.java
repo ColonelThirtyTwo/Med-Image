@@ -23,6 +23,13 @@ public abstract class Study {
     public abstract List<Image> getImages();
     
     /**
+     * Gets the list of sub-studies that this study contains. Studies should be
+     * ordered.
+     * @return 
+     */
+    public abstract List<Study> getStudies();
+    
+    /**
      * Gets the saved display state.
      * @return 
      */

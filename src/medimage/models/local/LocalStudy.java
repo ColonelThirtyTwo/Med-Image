@@ -20,6 +20,7 @@ public class LocalStudy extends Study {
     
     private final File directory;
     private List<Image> images;
+    private List<Study> studies;
     
     /**
      * Creates a study.
@@ -45,7 +46,7 @@ public class LocalStudy extends Study {
         images = new ArrayList<Image>();
         
         for(File f : imageFiles)
-            if(!f.getName().equals(".displaystate"))
+            if(f.isFile() && !f.getName().equals(".displaystate"))
                 images.add(new LocalImage(f));
         
         return images;
@@ -78,5 +79,22 @@ public class LocalStudy extends Study {
             // Can't do anything about it
             Logger.getLogger(LocalStudy.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public List<Study> getStudies() {
+        if(studies != null)
+            return studies;
+        
+        File[] imageFiles = directory.listFiles();
+        Arrays.sort(imageFiles);
+        
+        studies = new ArrayList<Study>();
+        
+        for(File f : imageFiles)
+            if(f.isDirectory())
+                studies.add(new LocalStudy(f));
+        
+        return studies;
     }
 }
