@@ -13,6 +13,7 @@ import medimage.models.Connection;
 import medimage.models.DisplayState;
 import medimage.models.Image;
 import medimage.models.Study;
+import medimage.views.ReconstructionOptionsView;
 
 /**
  * JFrame for displaying images. The JFrame contains a menu and several buttons,
@@ -169,6 +170,8 @@ public class ImageView extends JFrame {
         redoButton = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator menuSeparator = new javax.swing.JPopupMenu.Separator();
         backButton = new javax.swing.JMenuItem();
+        javax.swing.JMenu editMenu = new javax.swing.JMenu();
+        reconstructButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -236,6 +239,18 @@ public class ImageView extends JFrame {
         fileMenu.add(backButton);
 
         menuBar.add(fileMenu);
+
+        editMenu.setText("Edit");
+
+        reconstructButton.setText("Reconstruct 3D Data");
+        reconstructButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reconstructButtonActionPerformed(evt);
+            }
+        });
+        editMenu.add(reconstructButton);
+
+        menuBar.add(editMenu);
 
         setJMenuBar(menuBar);
 
@@ -318,10 +333,16 @@ public class ImageView extends JFrame {
         this.updateImageUI();
     }//GEN-LAST:event_nextButtonActionPerformed
 
+    private void reconstructButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reconstructButtonActionPerformed
+        ReconstructionOptionsView v = new ReconstructionOptionsView(this, study);
+        v.setVisible(true);
+    }//GEN-LAST:event_reconstructButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem backButton;
     private javax.swing.JButton nextButton;
     private javax.swing.JButton prevButton;
+    private javax.swing.JMenuItem reconstructButton;
     private javax.swing.JMenuItem redoButton;
     private javax.swing.JMenuItem saveButton;
     private javax.swing.JMenuItem switchDisplayModeButton;
