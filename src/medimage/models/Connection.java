@@ -1,3 +1,7 @@
+/**
+ * File: Connection.java
+ * Description: A model for a local Connection.
+ */
 
 package medimage.models;
 
