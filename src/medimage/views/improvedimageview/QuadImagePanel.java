@@ -1,3 +1,7 @@
+/**
+ * File: QuadImagePanel.java
+ * Description: An ImagePanel for viewing four images at a time.
+ */
 
 package medimage.views.improvedimageview;
 

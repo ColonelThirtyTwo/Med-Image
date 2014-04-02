@@ -1,3 +1,7 @@
+/**
+ * File: ImagePanel.java
+ * Description: A panel which can be swapped in and out of an ImageView.
+ */
 
 package medimage.views.improvedimageview;
 

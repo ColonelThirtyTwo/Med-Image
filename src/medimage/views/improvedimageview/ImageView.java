@@ -1,3 +1,7 @@
+/**
+ * File: ImageView.java
+ * Description: A view for images. It contains an ImagePanel
+ */
 
 package medimage.views.improvedimageview;
 
