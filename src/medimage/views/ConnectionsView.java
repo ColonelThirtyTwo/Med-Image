@@ -1,4 +1,7 @@
-
+/**
+ * File: ConnectionsView.java
+ * Description: A view for selecting which connection to open
+ */
 package medimage.views;
 
 import medimage.MedImage;

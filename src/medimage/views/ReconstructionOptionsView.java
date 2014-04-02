@@ -1,3 +1,7 @@
+/**
+ * File: ReconstructionOptionsView.java
+ * Description: A form for setting the reconstruction options
+ */
 
 package medimage.views;
 

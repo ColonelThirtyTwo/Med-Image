@@ -1,3 +1,7 @@
+/**
+ * File: StudiesView.java
+ * Description: The view for selecting which study to open.
+ */
 
 package medimage.views;
 

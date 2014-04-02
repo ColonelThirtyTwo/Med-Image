@@ -1,4 +1,7 @@
-
+/**
+ * File: ReconstructionView.java
+ * Description: The view for showing the reconstructed images
+ */
 package medimage.views;
 
 import java.awt.geom.AffineTransform;
