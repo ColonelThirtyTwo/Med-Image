@@ -21,13 +21,6 @@ public abstract class ImagePanel extends javax.swing.JPanel {
     protected abstract boolean isReadOnly();
     
     /**
-     * Creates a display state from the currently viewed image.
-     * @param iter Current image iterator.
-     * @return Current display state.
-     */
-    protected abstract DisplayState getDisplayState(ImageIterator iter);
-    
-    /**
      * Returns an array of all the image containers to populate with images.
      * @return 
      */

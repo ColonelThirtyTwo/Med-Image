@@ -42,4 +42,10 @@ public interface ImageIterator {
      */
     public abstract int getIndex();
     
+    /**
+     * Sets the index of the current image set.
+     * @param index 
+     */
+    public abstract void setIndex(int index);
+    
 }

@@ -64,4 +64,9 @@ public class SingleImageIterator implements ImageIterator {
     public int getIndex() {
         return index;
     }
+
+    @Override
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }

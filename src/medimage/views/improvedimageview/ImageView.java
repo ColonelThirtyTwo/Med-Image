@@ -3,10 +3,16 @@ package medimage.views.improvedimageview;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import medimage.Command;
 import medimage.ImageIterator;
 import medimage.MedImage;
 import medimage.models.Connection;
@@ -27,6 +33,125 @@ public class ImageView extends JFrame {
     private Study study;
     private ImageIterator iterator;
     private ImagePanel imagePanel;
+    private Deque<Command> executedCommands;
+    private Deque<Command> redoCommands;
+    
+    /**
+     * Command that represents a user scrolling between images.
+     */
+    public static class ScrollCommand extends Command {
+        
+        private final int prevIndex, newIndex;
+
+        /**
+         * Creates a new command.
+         * @param prevIndex Previous index of the iterator.
+         * @param newIndex New index of the iterator.
+         */
+        public ScrollCommand(int prevIndex, int newIndex) {
+            this.prevIndex = prevIndex;
+            this.newIndex = newIndex;
+        }
+        
+        @Override
+        public void apply(ImageView view, Study study) {
+            view.iterator.setIndex(newIndex);
+            view.updateImageUI();
+        }
+
+        @Override
+        public void undo(ImageView view, Study study) {
+            view.iterator.setIndex(prevIndex);
+            view.updateImageUI();
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 61 * hash + this.prevIndex;
+            hash = 61 * hash + this.newIndex;
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final ScrollCommand other = (ScrollCommand) obj;
+            if (this.prevIndex != other.prevIndex) {
+                return false;
+            }
+            return this.newIndex == other.newIndex;
+        }
+        
+    }
+    
+    /**
+     * Command that represents a user switching the display mode.
+     */
+    public static class ChangeDisplayModeCommand extends Command {
+        
+        private final DisplayState.States newState;
+
+        public ChangeDisplayModeCommand(DisplayState.States newState) {
+            this.newState = newState;
+        }
+        
+        @Override
+        public void apply(ImageView view, Study study) {
+            ImagePanel p;
+            if(newState == DisplayState.States.QUAD_IMAGE)
+                p = new QuadImagePanel();
+            else
+                p = new SingleImagePanel();
+
+            view.setImagePanel(p);
+
+            view.iterator = p.createIterator(view.study.getImages(), view.iterator.getIndex());
+            view.updateImageUI();
+            view.pack();
+            view.setVisible(true);
+        }
+
+        @Override
+        public void undo(ImageView view, Study study) {
+            ImagePanel p;
+            if(newState == DisplayState.States.QUAD_IMAGE)
+                p = new SingleImagePanel();
+            else
+                p = new QuadImagePanel();
+
+            view.setImagePanel(p);
+
+            view.iterator = p.createIterator(view.study.getImages(), view.iterator.getIndex());
+            view.updateImageUI();
+            view.pack();
+            view.setVisible(true);
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            hash = 43 * hash + Objects.hashCode(this.newState);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final ChangeDisplayModeCommand other = (ChangeDisplayModeCommand) obj;
+            return this.newState == other.newState;
+        }
+    }
     
     /**
      * Creates new form ImageView
@@ -55,6 +180,9 @@ public class ImageView extends JFrame {
         this.conn = conn;
         this.study = study;
         
+        executedCommands = new LinkedList<Command>();
+        redoCommands = new LinkedList<Command>();
+        
         ImagePanel p = new SingleImagePanel();
         setImagePanel(p);
         
@@ -75,6 +203,9 @@ public class ImageView extends JFrame {
         this.conn = conn;
         this.study = study;
         
+        executedCommands = new LinkedList<Command>();
+        redoCommands = new LinkedList<Command>();
+        
         ImagePanel p = new QuadImagePanel();
         setImagePanel(p);
         
@@ -82,6 +213,48 @@ public class ImageView extends JFrame {
         this.updateImageUI();
         this.pack();
         this.setVisible(true);
+    }
+    
+    /**
+     * Executes a command and adds it to the undo stack.
+     * @param c Command to execute.
+     * @param exec True to execute the command, false to simply add it to the
+     * undo stack.
+     */
+    public void addCommand(Command c, boolean exec) {
+        if(exec) c.apply(this, study);
+        executedCommands.addLast(c);
+        redoCommands.clear();
+    }
+    
+    /**
+     * Executes a command and adds it to the undo stack.
+     * @param c Command to execute.
+     */
+    public void addCommand(Command c) {
+        this.addCommand(c, true);
+    }
+    
+    /**
+     * Undoes the last command.
+     */
+    public void undoCommand() {
+        Command c = executedCommands.pollLast();
+        if(c != null) {
+            c.undo(this, study);
+            redoCommands.addLast(c);
+        }
+    }
+    
+    /**
+     * Redoes the last undid command.
+     */
+    public void redoCommand() {
+        Command c = redoCommands.pollLast();
+        if(c != null) {
+            c.apply(this, study);
+            executedCommands.addLast(c);
+        }
     }
     
     /**
@@ -97,7 +270,7 @@ public class ImageView extends JFrame {
     /**
      * Updates the UI with the current contents of the image iterator.
      */
-    protected void updateImageUI() {
+    public void updateImageUI() {
         JLabel[] labels = imagePanel.getImageContainers();
         Image[] imgs = this.iterator.getImages();
         for(int i=0; i<labels.length; i++) {
@@ -114,16 +287,29 @@ public class ImageView extends JFrame {
     }
     
     /**
+     * Creates a display state from the current GUI state.
+     * @return 
+     */
+    private DisplayState constructDisplayState() {
+        DisplayState.States s = imagePanel instanceof SingleImagePanel ?
+                DisplayState.States.SINGLE_IMAGE :
+                DisplayState.States.QUAD_IMAGE;
+        
+        List<Command> filteredCommands = new ArrayList<Command>();
+        for(Command c : executedCommands)
+            if(!(c instanceof ScrollCommand) && !(c instanceof ChangeDisplayModeCommand))
+                filteredCommands.add(c);
+        
+        return new DisplayState(s, iterator.getIndex(), filteredCommands);
+    }
+    
+    /**
      * Asks the user to save the display state, if needed.
      * @return True if user clicked 'yes' or 'no', or if the state hasn't changed.
      * False if the user clicked 'cancel' or closed the dialog box.
      */
     private boolean promptSaveState() {
-        DisplayState state = imagePanel.getDisplayState(iterator);
-        if(state == null)
-            // Don't warn if panel doesn't have display state to save.
-            return true;
-        
+        DisplayState state = this.constructDisplayState();
         if(state.equals(study.getDisplayState()))
             // Don't warn if nothing to save.
             return true;
@@ -142,7 +328,7 @@ public class ImageView extends JFrame {
             options[2]);
 
         if(n == 0) { // "Yes", save display state
-            study.saveDisplayState(imagePanel.getDisplayState(iterator));
+            study.saveDisplayState(state);
         }
         
         // If user clicked yes or no, follow through with action. Otherwise, if
@@ -285,15 +471,15 @@ public class ImageView extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        study.saveDisplayState(imagePanel.getDisplayState(iterator));
+        study.saveDisplayState(this.constructDisplayState());
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        // TODO add your handling code here:
+        this.undoCommand();
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-        // TODO add your handling code here:
+        this.redoCommand();
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -305,31 +491,26 @@ public class ImageView extends JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void switchDisplayModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchDisplayModeButtonActionPerformed
-        if(imagePanel.isReadOnly())
-            // Can't switch reconstruction panel
-            return;
-        
-        ImagePanel p;
-        if(imagePanel instanceof SingleImagePanel)
-            p = new QuadImagePanel();
-        else
-            p = new SingleImagePanel();
-        
-        setImagePanel(p);
-        
-        this.iterator = imagePanel.createIterator(study.getImages(), iterator.getIndex());
-        this.updateImageUI();
-        this.pack();
-        this.setVisible(true);
+        this.addCommand(new ChangeDisplayModeCommand(imagePanel instanceof SingleImagePanel ?
+                DisplayState.States.QUAD_IMAGE :
+                DisplayState.States.SINGLE_IMAGE));
     }//GEN-LAST:event_switchDisplayModeButtonActionPerformed
 
     private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        int oldIndex = iterator.getIndex();
         iterator.prev();
+        int newIndex = iterator.getIndex();
+        
+        this.addCommand(new ScrollCommand(oldIndex, newIndex), false);
         this.updateImageUI();
     }//GEN-LAST:event_prevButtonActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        int oldIndex = iterator.getIndex();
         iterator.next();
+        int newIndex = iterator.getIndex();
+        
+        this.addCommand(new ScrollCommand(oldIndex, newIndex), false);
         this.updateImageUI();
     }//GEN-LAST:event_nextButtonActionPerformed
 

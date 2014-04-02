@@ -78,4 +78,9 @@ public class QuadImageIterator implements ImageIterator {
             return null;
         return images.get(i);
     }
+
+    @Override
+    public void setIndex(int index) {
+        this.index = (index/4)*4; // Round down to nearest 4th
+    }
 }

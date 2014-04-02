@@ -3,6 +3,10 @@ package medimage.models;
 
 import java.io.Serializable;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import medimage.Command;
 
 /**
  * A plain-data object used to serialize what view and image to open a study
@@ -21,7 +25,6 @@ public class DisplayState implements Serializable {
      * Enumeration for various DisplayStates
      */
     public enum States {
-
         QUAD_IMAGE, SINGLE_IMAGE
     }
 
@@ -38,17 +41,24 @@ public class DisplayState implements Serializable {
      * @serial
      */
     private final int imageIndex;
+    
+    /**
+     * List of commands to execute when loading the display state.
+     * This consists only of commands that modify images.
+     */
+    private final List<Command> commands;
 
     /**
      * Constructor for DisplayState
      *
      * @param currState Current display mode
      * @param imgIndex Current image index.
+     * @param commands List of commands to execute when loading the display state.
      */
-    public DisplayState(States currState, int imgIndex) {
+    public DisplayState(States currState, int imgIndex, List<Command> commands) {
         this.currState = currState;
         this.imageIndex = imgIndex;
-
+        this.commands = new ArrayList<Command>(commands);
     }
 
     /**
@@ -68,6 +78,14 @@ public class DisplayState implements Serializable {
     public int getImageIndex() {
         return imageIndex;
     }
+
+    /**
+     * Gets the list of commands.
+     * @return 
+     */
+    public List<Command> getCommands() {
+        return Collections.unmodifiableList(commands);
+    }
     
     /**
      * Compares display states.
@@ -77,7 +95,8 @@ public class DisplayState implements Serializable {
     public boolean equals(DisplayState other) {
         if(other == null) return false;
         return other.getCurrState() == this.getCurrState() &&
-                this.getImageIndex() == other.getImageIndex();
+                this.getImageIndex() == other.getImageIndex() &&
+                this.commands.equals(other.getCommands());
     }
     
     /**

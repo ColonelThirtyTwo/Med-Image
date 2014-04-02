@@ -63,11 +63,6 @@ public class QuadImagePanel extends ImagePanel {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    protected DisplayState getDisplayState(ImageIterator iter) {
-        return new DisplayState(DisplayState.States.QUAD_IMAGE, iter.getIndex());
-    }
-
-    @Override
     protected JLabel[] getImageContainers() {
         return new JLabel[] {
             image_1,

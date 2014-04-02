@@ -43,12 +43,7 @@ public class SingleImagePanel extends ImagePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel image_1;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    protected DisplayState getDisplayState(ImageIterator iterator) {
-        return new DisplayState(DisplayState.States.SINGLE_IMAGE, iterator.getIndex());
-    }
-
+    
     @Override
     protected JLabel[] getImageContainers() {
         return new JLabel[] { image_1 };
