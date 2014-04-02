@@ -30,7 +30,7 @@
                   <Component id="imagesContainer" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="exitButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -43,7 +43,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="imagesContainer" pref="239" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="backButton" min="-2" max="-2" attributes="0"/>
+              <Component id="exitButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -109,11 +109,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&lt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topScrollLeftButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="topScrollRightButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&gt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="topScrollRightButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -165,11 +171,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&lt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frontScrollLeftButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="frontScrollRightButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&gt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frontScrollRightButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -221,20 +233,29 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="&lt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sideScrollLeftButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="sideScrollRightButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&gt;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sideScrollRightButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="backButton">
+    <Component class="javax.swing.JButton" name="exitButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Back"/>
+        <Property name="text" type="java.lang.String" value="Exit"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

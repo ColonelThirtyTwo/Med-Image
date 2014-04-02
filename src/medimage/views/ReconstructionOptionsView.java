@@ -1,7 +1,6 @@
 
 package medimage.views;
 
-import javax.swing.ButtonModel;
 import medimage.models.Study;
 
 /**

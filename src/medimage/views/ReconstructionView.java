@@ -1,6 +1,8 @@
 
 package medimage.views;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -13,14 +15,21 @@ import medimage.models.Study;
  */
 public class ReconstructionView extends javax.swing.JDialog {
     
-    public enum Axis {
-        
+    /**
+     * Clamps a value between two integers.
+     * @param v
+     * @param lower
+     * @param higher
+     * @return 
+     */
+    private static int clamp(int v, int lower, int higher) {
+        return Math.min(Math.max(v, lower), higher);
     }
     
     // Colors
-    private final int COLOR_RED = 0x00ff0000;
-    private final int COLOR_GREEN = 0x0000ff00;
-    private final int COLOR_BLUE = 0x000000ff;
+    private final int COLOR_RED   = 0xffff0000;
+    private final int COLOR_GREEN = 0xff00ff00;
+    private final int COLOR_BLUE  = 0xff0000ff;
     
     /**
      * Study that is being viewed.
@@ -78,12 +87,31 @@ public class ReconstructionView extends javax.swing.JDialog {
     }
     
     /**
+     * Rescales an image. This scales an image to a square with size equal to
+     * the maximum dimension of the 3D image data.
+     * @param img Image to scale
+     * @return Scaled version of image
+     */
+    private BufferedImage scaleImage(BufferedImage img) {
+        int maxCoord = Math.max(Math.max(data.length, data[0].length), data[0][0].length);
+        
+        int w = img.getWidth();
+        int h = img.getHeight();
+        BufferedImage after = new BufferedImage(maxCoord, maxCoord, BufferedImage.TYPE_INT_ARGB);
+        AffineTransform at = new AffineTransform();
+        at.scale(maxCoord/(double)w, maxCoord/(double)h);
+        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        after = scaleOp.filter(img, after);
+        return after;
+    }
+    
+    /**
      * Updates the UI.
      */
     private void updateUI() {
-        BufferedImage top = new BufferedImage(data.length, data[0][0].length, BufferedImage.TYPE_INT_RGB);
-        BufferedImage front = new BufferedImage(data.length, data[0].length, BufferedImage.TYPE_INT_RGB);
-        BufferedImage side = new BufferedImage(data[0][0].length, data[0].length, BufferedImage.TYPE_INT_RGB);
+        BufferedImage top = new BufferedImage(data.length, data[0][0].length, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage front = new BufferedImage(data.length, data[0].length, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage side = new BufferedImage(data[0][0].length, data[0].length, BufferedImage.TYPE_INT_ARGB);
         
         // Construct top view from data.
         for(int x=0; x<data.length; x++)
@@ -95,7 +123,7 @@ public class ReconstructionView extends javax.swing.JDialog {
                     color = COLOR_BLUE;
                 else
                     color = data[x][sliceY][z];
-                top.getRaster().setSample(x, z, 0, color);
+                top.setRGB(x, z, color);
             }
         
         // Construct front view.
@@ -108,7 +136,7 @@ public class ReconstructionView extends javax.swing.JDialog {
                     color = COLOR_GREEN;
                 else
                     color = data[x][y][sliceZ];
-                front.getRaster().setSample(x, y, 0, color);
+                front.setRGB(x, y, color);
             }
         
         // Construct side view.
@@ -121,13 +149,15 @@ public class ReconstructionView extends javax.swing.JDialog {
                     color = COLOR_BLUE;
                 else
                     color = data[sliceX][y][z];
-                side.getRaster().setSample(z, y, 0, color);
+                side.setRGB(z, y, color);
             }
         
+        
+        
         // Display images
-        topImage.setIcon(new ImageIcon(top));
-        frontImage.setIcon(new ImageIcon(front));
-        sideImage.setIcon(new ImageIcon(side));
+        topImage.setIcon(new ImageIcon(scaleImage(top)));
+        frontImage.setIcon(new ImageIcon(scaleImage(front)));
+        sideImage.setIcon(new ImageIcon(scaleImage(side)));
         
         topImage.setText("");
         frontImage.setText("");
@@ -158,7 +188,7 @@ public class ReconstructionView extends javax.swing.JDialog {
         sideImage = new javax.swing.JLabel();
         sideScrollLeftButton = new javax.swing.JButton();
         sideScrollRightButton = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reconstruction");
@@ -168,8 +198,18 @@ public class ReconstructionView extends javax.swing.JDialog {
         topImage.setText("<image>");
 
         topScrollLeftButton.setText("<");
+        topScrollLeftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topScrollLeftButtonActionPerformed(evt);
+            }
+        });
 
         topScrollRightButton.setText(">");
+        topScrollRightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topScrollRightButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout topImageContainerLayout = new javax.swing.GroupLayout(topImageContainer);
         topImageContainer.setLayout(topImageContainerLayout);
@@ -202,8 +242,18 @@ public class ReconstructionView extends javax.swing.JDialog {
         frontImage.setText("<image>");
 
         frontScrollLeftButton.setText("<");
+        frontScrollLeftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frontScrollLeftButtonActionPerformed(evt);
+            }
+        });
 
         frontScrollRightButton.setText(">");
+        frontScrollRightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frontScrollRightButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout frontImageContainerLayout = new javax.swing.GroupLayout(frontImageContainer);
         frontImageContainer.setLayout(frontImageContainerLayout);
@@ -236,8 +286,18 @@ public class ReconstructionView extends javax.swing.JDialog {
         sideImage.setText("<image>");
 
         sideScrollLeftButton.setText("<");
+        sideScrollLeftButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sideScrollLeftButtonActionPerformed(evt);
+            }
+        });
 
         sideScrollRightButton.setText(">");
+        sideScrollRightButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sideScrollRightButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sideImageContainerLayout = new javax.swing.GroupLayout(sideImageContainer);
         sideImageContainer.setLayout(sideImageContainerLayout);
@@ -267,7 +327,12 @@ public class ReconstructionView extends javax.swing.JDialog {
 
         imagesContainer.add(sideImageContainer);
 
-        backButton.setText("Back");
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -279,7 +344,7 @@ public class ReconstructionView extends javax.swing.JDialog {
                     .addComponent(imagesContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(backButton)))
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -288,15 +353,49 @@ public class ReconstructionView extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(imagesContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(backButton)
+                .addComponent(exitButton)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void topScrollLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topScrollLeftButtonActionPerformed
+        sliceY = clamp(sliceY-1, 0, data[0].length-1);
+        updateUI();
+    }//GEN-LAST:event_topScrollLeftButtonActionPerformed
+
+    private void topScrollRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topScrollRightButtonActionPerformed
+        sliceY = clamp(sliceY+1, 0, data[0].length-1);
+        updateUI();
+    }//GEN-LAST:event_topScrollRightButtonActionPerformed
+
+    private void frontScrollLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontScrollLeftButtonActionPerformed
+        sliceZ = clamp(sliceZ-1, 0, data[0][0].length-1);
+        updateUI();
+    }//GEN-LAST:event_frontScrollLeftButtonActionPerformed
+
+    private void frontScrollRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frontScrollRightButtonActionPerformed
+        sliceZ = clamp(sliceZ+1, 0, data[0][0].length-1);
+        updateUI();
+    }//GEN-LAST:event_frontScrollRightButtonActionPerformed
+
+    private void sideScrollLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideScrollLeftButtonActionPerformed
+        sliceX = clamp(sliceX-1, 0, data.length-1);
+        updateUI();
+    }//GEN-LAST:event_sideScrollLeftButtonActionPerformed
+
+    private void sideScrollRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sideScrollRightButtonActionPerformed
+        sliceX = clamp(sliceX+1, 0, data.length-1);
+        updateUI();
+    }//GEN-LAST:event_sideScrollRightButtonActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_exitButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
+    private javax.swing.JButton exitButton;
     private javax.swing.JLabel frontImage;
     private javax.swing.JButton frontScrollLeftButton;
     private javax.swing.JButton frontScrollRightButton;
