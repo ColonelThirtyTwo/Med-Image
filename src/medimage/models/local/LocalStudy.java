@@ -1,4 +1,7 @@
-
+/**
+ * File: LocalStudy.java
+ * Description: An implementation of Study for local Studies
+ */
 package medimage.models.local;
 
 import java.io.File;
