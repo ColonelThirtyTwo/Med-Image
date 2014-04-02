@@ -1,3 +1,8 @@
+/**
+ * File: QuadImageIterator.java
+ * Description: An implementation of ImageIterator for moving through four
+ * images at a time.
+ */
 
 package medimage;
 

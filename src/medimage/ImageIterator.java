@@ -1,4 +1,8 @@
-
+/**
+ * File: ImageIterator.java
+ * Description: Defines the interface for an ImageIterator. This is implemented
+ * by QuadImageIterator and SingleImageIterator
+ */
 package medimage;
 
 import medimage.models.Image;

@@ -1,3 +1,7 @@
+/**
+ * File: Command.java
+ * Description: Defines the abstract class for concrete command implementations.
+ */
 
 package medimage;
 

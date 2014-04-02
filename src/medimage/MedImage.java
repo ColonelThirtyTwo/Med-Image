@@ -1,4 +1,7 @@
-
+/**
+ * File: MedImage.java
+ * Description: The class containing the main method.
+ */
 package medimage;
 
 import medimage.views.ConnectionsView;

@@ -1,3 +1,8 @@
+/**
+ * File: SingleImageIterator.java
+ * Description: An implementation of ImageIterator for moving through one
+ * image at a time.
+ */
 
 package medimage;
 
