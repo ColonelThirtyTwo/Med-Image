@@ -1,3 +1,7 @@
+/**
+ * File: Study.java
+ * Description: A model for a study object.
+ */
 
 package medimage.models;
 

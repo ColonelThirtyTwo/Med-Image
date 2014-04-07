@@ -1,3 +1,7 @@
+/**
+ * File: LoccalImage.java
+ * Description: An implementation of Image for local images.
+ */
 
 package medimage.models.local;
 

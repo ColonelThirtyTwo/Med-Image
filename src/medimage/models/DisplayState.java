@@ -1,3 +1,8 @@
+/**
+ * File: DisplayState.java
+ * Description: A model for the DisplayState.  This is used to store
+ * data that must be kept upon closing the program.
+ */
 
 package medimage.models;
 

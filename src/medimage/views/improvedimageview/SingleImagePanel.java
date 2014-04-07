@@ -1,4 +1,7 @@
-
+/**
+ * File: SingleImagePanel.java
+ * Description: An ImagePanel for viewing a single image at a time.
+ */
 package medimage.views.improvedimageview;
 
 import java.util.List;

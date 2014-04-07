@@ -1,4 +1,7 @@
-
+/**
+ * File: CopyStudyView.java
+ * Description: The view for copying studies.
+ */
 package medimage.views;
 
 import medimage.models.Connection;

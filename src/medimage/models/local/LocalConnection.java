@@ -1,3 +1,7 @@
+/**
+ * File: LocalConnection.java
+ * Description: An implementation of Connection for Local Connections
+ */
 
 package medimage.models.local;
 

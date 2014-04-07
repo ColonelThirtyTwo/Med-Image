@@ -1,3 +1,7 @@
+/**
+ * File: Connection.java
+ * Description: A model for a Connection abstract class.
+ */
 
 package medimage.models;
 

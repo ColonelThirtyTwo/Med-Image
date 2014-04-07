@@ -1,3 +1,7 @@
+/**
+ * File: Image.java
+ * Description: A model for the Image abstract class.
+ */
 
 package medimage.models;
 

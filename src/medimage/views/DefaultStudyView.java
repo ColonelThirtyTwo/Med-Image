@@ -1,4 +1,7 @@
-
+/**
+ * File: DefaultStudyView.java
+ * Description: A view to set the default study to open.
+ */
 package medimage.views;
 
 import java.util.List;
