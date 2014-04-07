@@ -20,6 +20,7 @@ import medimage.models.DisplayState;
 import medimage.models.Image;
 import medimage.models.Study;
 import medimage.views.ReconstructionOptionsView;
+import medimage.views.WindowingOptionsView;
 
 /**
  * JFrame for displaying images. The JFrame contains a menu and several buttons,
@@ -170,46 +171,33 @@ public class ImageView extends JFrame {
     }
     
     /**
-     * Updates the UI to view a list of images in a single image display mode
-     * and makes the frame visible.
+     * Updates the UI to view a list of images and makes the frame visible.
      * @param conn Connection of the study
      * @param study Study to view images from
      * @param index Index of image to view.
+     * @param state Whether to open in single image mode or 2x2 image mode.
+     * @param commands Commands to execute upon viewing
      */
-    public void viewSingleImage(Connection conn, Study study, int index) {
+    public void viewImages(Connection conn, Study study, int index, DisplayState.States state, List<Command> commands) {
         this.conn = conn;
         this.study = study;
         
         executedCommands = new LinkedList<Command>();
         redoCommands = new LinkedList<Command>();
         
-        ImagePanel p = new SingleImagePanel();
+        ImagePanel p;
+        if(state == null || state == DisplayState.States.SINGLE_IMAGE)
+            p = new SingleImagePanel();
+        else
+            p = new QuadImagePanel();
         setImagePanel(p);
         
         this.iterator = imagePanel.createIterator(study.getImages(), index);
-        this.updateImageUI();
-        this.pack();
-        this.setVisible(true);
-    }
-    
-    /**
-     * Updates the UI to view a list of images in a 2x2 image display mode
-     * and makes the frame visible.
-     * @param conn Connection of the study
-     * @param study Study to view images from
-     * @param index Index of image to view.
-     */
-    public void viewQuadImage(Connection conn, Study study, int index) {
-        this.conn = conn;
-        this.study = study;
         
-        executedCommands = new LinkedList<Command>();
-        redoCommands = new LinkedList<Command>();
+        if(commands != null)
+            for(Command c : commands)
+                this.addCommand(c);
         
-        ImagePanel p = new QuadImagePanel();
-        setImagePanel(p);
-        
-        this.iterator = imagePanel.createIterator(study.getImages(), index);
         this.updateImageUI();
         this.pack();
         this.setVisible(true);
@@ -358,6 +346,7 @@ public class ImageView extends JFrame {
         backButton = new javax.swing.JMenuItem();
         javax.swing.JMenu editMenu = new javax.swing.JMenu();
         reconstructButton = new javax.swing.JMenuItem();
+        windowStudyButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -435,6 +424,14 @@ public class ImageView extends JFrame {
             }
         });
         editMenu.add(reconstructButton);
+
+        windowStudyButton.setText("Window Study");
+        windowStudyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                windowStudyButtonActionPerformed(evt);
+            }
+        });
+        editMenu.add(windowStudyButton);
 
         menuBar.add(editMenu);
 
@@ -519,6 +516,11 @@ public class ImageView extends JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_reconstructButtonActionPerformed
 
+    private void windowStudyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_windowStudyButtonActionPerformed
+        WindowingOptionsView v = new WindowingOptionsView(this);
+        v.setVisible(true);
+    }//GEN-LAST:event_windowStudyButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem backButton;
     private javax.swing.JButton nextButton;
@@ -529,5 +531,6 @@ public class ImageView extends JFrame {
     private javax.swing.JMenuItem switchDisplayModeButton;
     private javax.swing.JMenuItem undoButton;
     private javax.swing.JPanel viewContainer;
+    private javax.swing.JMenuItem windowStudyButton;
     // End of variables declaration//GEN-END:variables
 }

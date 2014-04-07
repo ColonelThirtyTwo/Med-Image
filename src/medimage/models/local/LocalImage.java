@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -18,7 +20,7 @@ import medimage.models.Image;
 public class LocalImage extends Image {
     
     private final String name;
-    private BufferedImage image;
+    private List<BufferedImage> imageStack;
     
     /**
      * Loads a local image.
@@ -26,6 +28,8 @@ public class LocalImage extends Image {
      */
     public LocalImage(File f) {
         name = f.getName();
+        
+        imageStack = new ArrayList<BufferedImage>(1);
         
         //Handling of ACR file types
         if(name.endsWith(".acr")){
@@ -77,25 +81,41 @@ public class LocalImage extends Image {
 
                 }
             }
-            image = sliceBuffer;
+            imageStack.add(sliceBuffer);
         } else {
-        
+            
+            BufferedImage image;
             try {
                 image = ImageIO.read(f);
             } catch (IOException ex) {
+                // Can't do anything about this.
                 Logger.getLogger(LocalImage.class.getName()).log(Level.SEVERE, null, ex);
+                image = null;
             }
+            imageStack.add(image);
         }
     }
     
     @Override
     public BufferedImage getImageData() {
-        return image;
+        return imageStack.get(imageStack.size()-1);
     }
     
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void pushModifiedImage(BufferedImage img) {
+        imageStack.add(img);
+    }
+
+    @Override
+    public void popModifiedImage() {
+        if(imageStack.size() == 1)
+            throw new RuntimeException("popModifiedImage tried to pop last image.");
+        imageStack.remove(imageStack.size()-1);
     }
     
 }

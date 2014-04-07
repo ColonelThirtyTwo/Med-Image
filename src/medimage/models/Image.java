@@ -20,4 +20,14 @@ public abstract class Image {
      * @return 
      */
     public abstract String getName();
+    
+    /**
+     * Pushes a modified image to the image's undo stack.
+     */
+    public abstract void pushModifiedImage(BufferedImage img);
+    
+    /**
+     * Pops a modified image from the image's undo stack.
+     */
+    public abstract void popModifiedImage();
 }

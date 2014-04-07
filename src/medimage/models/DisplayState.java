@@ -130,6 +130,6 @@ public class DisplayState implements Serializable {
 
     @Override
     public String toString() {
-        return "DisplayState{" + "currState=" + currState + ", imageIndex=" + imageIndex + '}';
+        return "DisplayState{" + "currState=" + currState + ", imageIndex=" + imageIndex + ", commands=" + commands + '}';
     }
 }
